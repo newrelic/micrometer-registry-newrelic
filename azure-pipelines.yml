@@ -25,7 +25,7 @@ steps:
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'verifyGoogleJavaFormat'
   - task: Gradle@2
-    displayName: Gradle Check Task
+    displayName: Gradle Tests Task
     inputs:
       workingDirectory: ''
       gradleWrapperFile: 'gradlew'
