@@ -1,5 +1,5 @@
 # PR + Master build
-
+name: PR Build for Micrometer Registry
 pr:
   branches:
     include:
