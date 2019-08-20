@@ -265,8 +265,7 @@ class NewRelicRegistryTest {
   @Test
   void testMetricFiltersAreSupported() {
     long now = System.currentTimeMillis();
-    Gauge expectedMetric =
-        new Gauge("8_oh_eight", 34, now, new Attributes().put("a", "b"));
+    Gauge expectedMetric = new Gauge("8_oh_eight", 34, now, new Attributes().put("a", "b"));
     MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
