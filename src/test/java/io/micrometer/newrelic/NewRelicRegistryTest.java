@@ -30,6 +30,7 @@ import io.micrometer.core.instrument.LongTaskTimer;
 import io.micrometer.core.instrument.Tag;
 import io.micrometer.core.instrument.TimeGauge;
 import io.micrometer.core.instrument.Timer;
+import io.micrometer.core.instrument.config.MeterFilter;
 import io.micrometer.newrelic.transform.BareMeterTransformer;
 import io.micrometer.newrelic.transform.CommonCounterTransformer;
 import io.micrometer.newrelic.transform.DistributionSummaryTransformer;
@@ -259,5 +260,21 @@ class NewRelicRegistryTest {
 
     verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
+  }
+
+  @Test
+  void testMetricFiltersAreSupported() {
+    long now = System.currentTimeMillis();
+    Gauge expectedMetric = new Gauge("8_oh_eight", 34, now, new Attributes().put("a", "b"));
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+
+    when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
+        .thenReturn(expectedMetric);
+
+    newRelicRegistry.config().meterFilter(MeterFilter.denyNameStartsWith("7"));
+    newRelicRegistry.gauge("7_eleven", 33);
+    newRelicRegistry.gauge("8_oh_eight", 33);
+    newRelicRegistry.publish();
+    verify(newRelicSender).sendBatch(expectedBatch);
   }
 }
