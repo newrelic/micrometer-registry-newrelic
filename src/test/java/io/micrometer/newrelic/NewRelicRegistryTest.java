@@ -18,8 +18,8 @@ import com.newrelic.telemetry.Count;
 import com.newrelic.telemetry.Gauge;
 import com.newrelic.telemetry.Metric;
 import com.newrelic.telemetry.MetricBatch;
-import com.newrelic.telemetry.RetryingTelemetrySender;
 import com.newrelic.telemetry.Summary;
+import com.newrelic.telemetry.TelemetryClient;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
@@ -64,7 +64,7 @@ class NewRelicRegistryTest {
   @Mock private CommonCounterTransformer<Counter> counterTransformer;
   @Mock private LongTaskTimerTransformer longTaskTimerTransformer;
   @Mock private CommonCounterTransformer<FunctionCounter> functionCounterTransformer;
-  @Mock private RetryingTelemetrySender newRelicSender;
+  @Mock private TelemetryClient newRelicSender;
   @Mock private DistributionSummaryTransformer distributionSummaryTransformer;
   @Mock private TimeTracker timeTracker;
   @Mock private BareMeterTransformer bareMeterTransformer;
@@ -117,7 +117,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -135,7 +135,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -153,7 +153,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -181,7 +181,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -199,7 +199,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -219,7 +219,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -238,7 +238,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -257,7 +257,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).send(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 }

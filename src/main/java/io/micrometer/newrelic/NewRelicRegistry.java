@@ -11,7 +11,7 @@ import com.newrelic.telemetry.Attributes;
 import com.newrelic.telemetry.Metric;
 import com.newrelic.telemetry.MetricBatch;
 import com.newrelic.telemetry.MetricBatchSender;
-import com.newrelic.telemetry.RetryingTelemetrySender;
+import com.newrelic.telemetry.TelemetryClient;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
@@ -54,7 +54,7 @@ import java.util.concurrent.TimeUnit;
 public class NewRelicRegistry extends StepMeterRegistry {
 
   private final NewRelicRegistryConfig config;
-  private final RetryingTelemetrySender newRelicSender;
+  private final TelemetryClient newRelicSender;
   private final Attributes commonAttributes;
   private final TimeGaugeTransformer timeGaugeTransformer;
   private final GaugeTransformer gaugeTransformer;
@@ -82,7 +82,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
         config,
         clock,
         commonAttributes,
-        new RetryingTelemetrySender(
+        new TelemetryClient(
             MetricBatchSender.builder(
                     config.apiKey(), new MicrometerHttpPoster(httpSender), new MetricToJson())
                 .uriOverride(URI.create(config.uri()))
@@ -104,7 +104,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       NewRelicRegistryConfig config,
       Clock clock,
       Attributes commonAttributes,
-      RetryingTelemetrySender newRelicSender,
+      TelemetryClient newRelicSender,
       TimeGaugeTransformer timeGaugeTransformer,
       GaugeTransformer gaugeTransformer,
       TimerTransformer timerTransformer,
@@ -160,7 +160,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
               metrics.addAll(bareMeterTransformer.transform(meter));
             }
           });
-      newRelicSender.send(new MetricBatch(metrics, commonAttributes));
+      newRelicSender.sendBatch(new MetricBatch(metrics, commonAttributes));
     }
     timeTracker.tick();
   }
