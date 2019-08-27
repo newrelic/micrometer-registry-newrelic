@@ -19,13 +19,13 @@ public class AttributesMaker {
     String baseUnit = id.getBaseUnit();
     String description = id.getDescription();
 
-    Attributes attributes = new Attributes().put("source_type", sourceType);
+    Attributes attributes = new Attributes().put("source.type", sourceType);
 
     if (description != null) {
       attributes.put("description", description);
     }
     if (baseUnit != null) {
-      attributes.put("base_unit", baseUnit);
+      attributes.put("baseUnit", baseUnit);
     }
     tags.forEach(tag -> attributes.put(tag.getKey(), tag.getValue()));
 

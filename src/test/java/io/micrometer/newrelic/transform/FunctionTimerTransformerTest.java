@@ -43,8 +43,8 @@ class FunctionTimerTransformerTest {
     Attributes expectedAttributes =
         new Attributes()
             .put("description", "timerDescription")
-            .put("source_type", "function_timer")
-            .put("base_unit", "tomatoes")
+            .put("source.type", "function_timer")
+            .put("baseUnit", "tomatoes")
             .put("foo", "bar");
 
     Meter.Id id =

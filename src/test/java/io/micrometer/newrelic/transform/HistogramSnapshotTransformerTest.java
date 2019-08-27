@@ -70,19 +70,19 @@ class HistogramSnapshotTransformerTest {
             snapshotCount - oldSnapshotCount,
             before,
             now,
-            new Attributes().put("source_type", "distribution_summary"));
+            new Attributes().put("source.type", "distribution_summary"));
     Metric expectedSnapshotTotal =
         new Gauge(
             metricName + ".snapshot.total",
             snapshotTotal,
             now,
-            new Attributes().put("source_type", "distribution_summary"));
+            new Attributes().put("source.type", "distribution_summary"));
     Metric expectedSnapshotMax =
         new Gauge(
             metricName + ".snapshot.max",
             snapshotMax,
             now,
-            new Attributes().put("source_type", "distribution_summary"));
+            new Attributes().put("source.type", "distribution_summary"));
 
     Collection<Metric> expected =
         Arrays.asList(expectedSnapshotCount, expectedSnapshotTotal, expectedSnapshotMax);

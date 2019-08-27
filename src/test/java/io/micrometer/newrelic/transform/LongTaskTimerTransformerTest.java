@@ -36,9 +36,9 @@ class LongTaskTimerTransformerTest {
         new Attributes()
             .put("spoon", "pup")
             .put("description", "des des")
-            .put("source_type", "long_task_timer")
-            .put("base_unit", "grams")
-            .put("base_time_unit", "NANOSECONDS");
+            .put("source.type", "long_task_timer")
+            .put("baseUnit", "grams")
+            .put("baseTimeUnit", "NANOSECONDS");
 
     Clock clock = mock(Clock.class);
     LongTaskTimerTransformer testClass = new LongTaskTimerTransformer(clock);

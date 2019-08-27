@@ -30,8 +30,8 @@ class TimeGaugeTransformerTest {
     Attributes expectedAttributes =
         new Attributes()
             .put("description", "something")
-            .put("source_type", "time_gauge")
-            .put("base_unit", "b")
+            .put("source.type", "time_gauge")
+            .put("baseUnit", "b")
             .put("foo", "bar");
     long now = System.currentTimeMillis();
     Id id = new Id("aaa", Tags.of(Tag.of("foo", "bar")), "b", "something", Type.GAUGE);
