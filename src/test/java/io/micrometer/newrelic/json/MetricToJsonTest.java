@@ -58,12 +58,4 @@ class MetricToJsonTest {
             });
     assertEquals("expected $$$", testClass.writeGaugeJson(gauge));
   }
-
-  @Test
-  void testWriteAttributes() {
-    MetricToJson testClass = new MetricToJson(null, null, null);
-    String result =
-        testClass.writeAttributes(new Attributes().put("foo", "bar").put("strong", "bad").asMap());
-    assertEquals("{\"strong\":\"bad\",\"foo\":\"bar\"}", result);
-  }
 }

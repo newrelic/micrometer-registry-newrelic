@@ -1,5 +1,6 @@
 .gradle
 .idea
 .grand-central-build-dependencies-cache
+out/
 
 build
