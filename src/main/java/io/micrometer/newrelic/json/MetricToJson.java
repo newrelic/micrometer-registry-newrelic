@@ -48,10 +48,4 @@ public class MetricToJson implements MetricJsonGenerator {
     return countToJson.apply(count);
   }
 
-  @Override
-  public String writeAttributes(Map<String, Object> map) {
-    StringBuilder buff = new StringBuilder();
-    AttributesWriter.writeAttributesObject(buff, map);
-    return buff.toString();
-  }
 }
