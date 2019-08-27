@@ -12,7 +12,7 @@ for micrometer metrics than Custom Events.
 
 1) via gradle: 
   
-    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.1.0-SNAPSHOT'`
+    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.1.1-SNAPSHOT'`
 
     Note: you might need to also include a dependency on micrometer-core itself, for example:
 
