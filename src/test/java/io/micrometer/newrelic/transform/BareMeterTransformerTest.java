@@ -55,8 +55,8 @@ class BareMeterTransformerTest {
 
     Attributes expectedAttributes =
         new Attributes()
-            .put("source_type", "meter")
-            .put("base_unit", "units")
+            .put("source.type", "meter")
+            .put("baseUnit", "units")
             .put("description", "meterDescription")
             .put("foo", "bar");
     Gauge count = new Gauge("meterName.count", 55d, now, expectedAttributes);

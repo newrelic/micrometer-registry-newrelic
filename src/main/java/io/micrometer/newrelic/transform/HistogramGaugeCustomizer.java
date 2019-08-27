@@ -42,7 +42,7 @@ public class HistogramGaugeCustomizer {
         percentile ->
             Tags.concat(
                 id.getTagsAsIterable(),
-                "nr_percentile",
+                "newRelic.percentile",
                 DoubleFormat.decimalOrNan(percentile.percentile() * 100d)),
         toDouble,
         bucket -> id.getName() + ".histogram",
