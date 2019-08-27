@@ -7,8 +7,11 @@ public class AttributesJsonImpl implements AttributesJson {
 
   @Override
   public String toJson(Map<String, Object> attributes) {
-//    StringBuilder
-//    AttributesWriter.writeAttributes();
-    return null;
+    if (attributes.isEmpty()) {
+      return "{}";
+    }
+    StringBuilder builder = new StringBuilder();
+    AttributesWriter.writeAttributesObject(builder, attributes);
+    return builder.toString();
   }
 }

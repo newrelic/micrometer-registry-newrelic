@@ -11,7 +11,6 @@ import com.newrelic.telemetry.Count;
 import com.newrelic.telemetry.Gauge;
 import com.newrelic.telemetry.MetricJsonGenerator;
 import com.newrelic.telemetry.Summary;
-import java.util.Map;
 import java.util.function.Function;
 
 public class MetricToJson implements MetricJsonGenerator {
@@ -47,5 +46,4 @@ public class MetricToJson implements MetricJsonGenerator {
   public String writeCountJson(Count count) {
     return countToJson.apply(count);
   }
-
 }

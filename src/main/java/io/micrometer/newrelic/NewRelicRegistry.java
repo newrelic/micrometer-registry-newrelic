@@ -85,8 +85,10 @@ public class NewRelicRegistry extends StepMeterRegistry {
         commonAttributes,
         new TelemetryClient(
             MetricBatchSender.builder(
-                config.apiKey(), new MicrometerHttpPoster(httpSender), new MetricToJson(),
-                new AttributesJsonImpl())
+                    config.apiKey(),
+                    new MicrometerHttpPoster(httpSender),
+                    new MetricToJson(),
+                    new AttributesJsonImpl())
                 .uriOverride(URI.create(config.uri()))
                 .build()),
         new TimeGaugeTransformer(new GaugeTransformer(clock, attributesMaker)),
@@ -239,5 +241,4 @@ public class NewRelicRegistry extends StepMeterRegistry {
       }
     }
   }
-
 }

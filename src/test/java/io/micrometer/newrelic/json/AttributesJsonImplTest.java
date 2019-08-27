@@ -6,7 +6,6 @@ import java.util.HashMap;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 
-
 class AttributesJsonImplTest {
   @Test
   void testEmptyMapToJson() {
@@ -23,6 +22,6 @@ class AttributesJsonImplTest {
     map.put("foo", "bar");
     map.put("hello", 12);
     String result = testClass.toJson(map);
-    assertEquals("{ foo: bar, hello: 12 }", result);
+    assertEquals("{\"foo\":\"bar\",\"hello\":12}", result);
   }
 }
