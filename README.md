@@ -12,7 +12,7 @@ for micrometer metrics than Custom Events.
 
 1) via gradle: 
   
-    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.1.1-SNAPSHOT'`
+    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.1.1'`
 
     Note: you might need to also include a dependency on micrometer-core itself, for example:
 
@@ -61,8 +61,5 @@ Here is an example of how you might do that:
 
 ```
 
-// TODO figure this out?
-Note: We have not built a spring-boot autoconfigurable shim for the configuration interface. Advice or contributions 
-on the correct and idiomatic way to provide that are very welcome. 
 
-And, that's it! For details on what your metrics will look like once they are reported, please see the [Micrometer exporter spec](TODO add link to public spec). 
+And, that's it! For details on what your metrics will look like once they are reported, please see the [Micrometer exporter spec](https://github.com/newrelic/exporter-specs). 
