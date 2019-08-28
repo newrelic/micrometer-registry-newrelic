@@ -19,7 +19,7 @@ public class FunctionCounterAdapter implements CommonCounterTransformer.CommonCo
 
   @Override
   public String sourceType() {
-    return "function_counter";
+    return "functionCounter";
   }
 
   @Override

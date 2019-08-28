@@ -30,7 +30,7 @@ class FunctionCounterAdapterTest {
 
     CommonCounterTransformer.CommonCounter result = new FunctionCounterAdapter(counter);
     assertEquals(33d, result.count());
-    assertEquals("function_counter", result.sourceType());
+    assertEquals("functionCounter", result.sourceType());
     assertEquals(id, result.id());
   }
 }

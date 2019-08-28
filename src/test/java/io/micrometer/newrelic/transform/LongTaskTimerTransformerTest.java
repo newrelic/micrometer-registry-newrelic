@@ -36,14 +36,14 @@ class LongTaskTimerTransformerTest {
         new Attributes()
             .put("spoon", "pup")
             .put("description", "des des")
-            .put("source.type", "long_task_timer")
+            .put("source.type", "longTaskTimer")
             .put("baseUnit", "grams")
             .put("baseTimeUnit", "NANOSECONDS");
 
     Clock clock = mock(Clock.class);
     LongTaskTimerTransformer testClass = new LongTaskTimerTransformer(clock);
-    Metric active = new Gauge(name + ".active_tasks", 15, now, expectedAttributes);
-    Metric totalDuration = new Gauge(name + ".total_duration", 21.42, now, expectedAttributes);
+    Metric active = new Gauge(name + ".activeTasks", 15, now, expectedAttributes);
+    Metric totalDuration = new Gauge(name + ".totalDuration", 21.42, now, expectedAttributes);
     Collection<Metric> expected = Arrays.asList(active, totalDuration);
 
     LongTaskTimer timer = mock(LongTaskTimer.class);

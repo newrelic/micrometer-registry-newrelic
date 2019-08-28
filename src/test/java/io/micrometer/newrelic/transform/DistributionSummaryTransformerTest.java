@@ -69,7 +69,7 @@ class DistributionSummaryTransformerTest {
             valuePercentiles[0].value(),
             now,
             new Attributes()
-                .put("source.type", "distribution_summary")
+                .put("source.type", "distributionSummary")
                 .put("newRelic.percentile", valuePercentiles[0].percentile() * 100d));
     Metric expectedPercentile2 =
         new Gauge(
@@ -77,7 +77,7 @@ class DistributionSummaryTransformerTest {
             valuePercentiles[1].value(),
             now,
             new Attributes()
-                .put("source.type", "distribution_summary")
+                .put("source.type", "distributionSummary")
                 .put("newRelic.percentile", valuePercentiles[1].percentile() * 100d));
 
     Collection<Metric> expected =
@@ -93,7 +93,7 @@ class DistributionSummaryTransformerTest {
 
     when(timeTracker.getCurrentTime()).thenReturn(now);
     when(timeTracker.getPreviousTime()).thenReturn(before);
-    when(attributesMaker.make(summaryId, "distribution_summary")).thenReturn(summaryAttributes);
+    when(attributesMaker.make(summaryId, "distributionSummary")).thenReturn(summaryAttributes);
     when(summary.getId()).thenReturn(summaryId);
     when(summary.takeSnapshot()).thenReturn(snapshot);
 

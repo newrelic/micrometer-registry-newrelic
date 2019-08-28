@@ -19,6 +19,6 @@ public class TimeGaugeTransformer {
   }
 
   public Metric transform(TimeGauge timeGauge) {
-    return delegate.transform(timeGauge, "time_gauge");
+    return delegate.transform(timeGauge, "timeGauge");
   }
 }

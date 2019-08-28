@@ -30,7 +30,7 @@ public class HistogramSnapshotTransformer {
   Stream<Metric> buildSnapshotSummary(HistogramSupport histogramSupport) {
     long now = clock.wallTime();
     HistogramSnapshot snapshot = histogramSupport.takeSnapshot();
-    Attributes attributes = new Attributes().put("source.type", "distribution_summary");
+    Attributes attributes = new Attributes().put("source.type", "distributionSummary");
     Meter.Id metricId = histogramSupport.getId();
     String countName = metricId.getName() + ".snapshot.count";
     LastSeenTracker.LastSeen lastSeen =

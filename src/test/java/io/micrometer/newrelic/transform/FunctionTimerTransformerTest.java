@@ -43,7 +43,7 @@ class FunctionTimerTransformerTest {
     Attributes expectedAttributes =
         new Attributes()
             .put("description", "timerDescription")
-            .put("source.type", "function_timer")
+            .put("source.type", "functionTimer")
             .put("baseUnit", "tomatoes")
             .put("foo", "bar");
 
@@ -63,7 +63,7 @@ class FunctionTimerTransformerTest {
     when(timeTracker.getCurrentTime()).thenReturn(now);
 
     Count count = new Count("functionTimerName.count", 55L, before, now, expectedAttributes);
-    Gauge totalTime = new Gauge("functionTimerName.total_time", 10000L, now, expectedAttributes);
+    Gauge totalTime = new Gauge("functionTimerName.totalTime", 10000L, now, expectedAttributes);
     Gauge mean = new Gauge("functionTimerName.mean", 50L, now, expectedAttributes);
     Collection<Metric> metrics = functionTimerTransformer.transform(functionTimer);
 

@@ -43,7 +43,7 @@ class TimerTransformerTest {
             .put("description", "description")
             .put("baseUnit", "units");
     Count count = new Count("timerName.count", 1000, now - 2000, now, standardAttributes);
-    Gauge totalTime = new Gauge("timerName.total_time", 20000, now, standardAttributes);
+    Gauge totalTime = new Gauge("timerName.totalTime", 20000, now, standardAttributes);
     Gauge max = new Gauge("timerName.max", 5000, now, standardAttributes);
     Gauge mean = new Gauge("timerName.mean", 500, now, standardAttributes);
 
