@@ -39,7 +39,7 @@ public class TimerTransformer {
 
     Gauge total =
         new Gauge(
-            id.getName() + ".total_time",
+            id.getName() + ".totalTime",
             timer.totalTime(timer.baseTimeUnit()),
             now,
             attributesMaker.make(id, "timer"));

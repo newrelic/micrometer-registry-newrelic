@@ -30,7 +30,7 @@ class TimeGaugeTransformerTest {
     Attributes expectedAttributes =
         new Attributes()
             .put("description", "something")
-            .put("source.type", "time_gauge")
+            .put("source.type", "timeGauge")
             .put("baseUnit", "b")
             .put("foo", "bar");
     long now = System.currentTimeMillis();

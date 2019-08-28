@@ -28,7 +28,7 @@ public class FunctionTimerTransformer {
   public Collection<Metric> transform(FunctionTimer functionTimer) {
     Meter.Id id = functionTimer.getId();
     long now = timeTracker.getCurrentTime();
-    Attributes attributes = attributesMaker.make(id, "function_timer");
+    Attributes attributes = attributesMaker.make(id, "functionTimer");
     Count count =
         new Count(
             id.getName() + ".count",
@@ -38,7 +38,7 @@ public class FunctionTimerTransformer {
             attributes);
     Gauge totalTime =
         new Gauge(
-            id.getName() + ".total_time",
+            id.getName() + ".totalTime",
             functionTimer.totalTime(functionTimer.baseTimeUnit()),
             now,
             attributes);

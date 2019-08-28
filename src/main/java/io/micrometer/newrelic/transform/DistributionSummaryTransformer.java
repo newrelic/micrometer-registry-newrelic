@@ -43,7 +43,7 @@ public class DistributionSummaryTransformer {
   private Stream<Metric> buildBaseMetrics(
       DistributionSummary distributionSummary, long now, HistogramSnapshot snapshot) {
     Attributes attributes =
-        attributesMaker.make(distributionSummary.getId(), "distribution_summary");
+        attributesMaker.make(distributionSummary.getId(), "distributionSummary");
     String name = distributionSummary.getId().getName();
     return Stream.of(
         new Count(
@@ -66,7 +66,7 @@ public class DistributionSummaryTransformer {
                     valueAtPercentile.value(),
                     now,
                     new Attributes()
-                        .put("source.type", "distribution_summary")
+                        .put("source.type", "distributionSummary")
                         .put("newRelic.percentile", valueAtPercentile.percentile() * 100d)));
   }
 }

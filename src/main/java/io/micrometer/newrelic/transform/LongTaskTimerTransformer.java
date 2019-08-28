@@ -27,16 +27,16 @@ public class LongTaskTimerTransformer {
 
   public Collection<Metric> transform(LongTaskTimer timer) {
     Attributes attributes =
-        attributesMaker.make(timer.getId(), "long_task_timer").put("baseTimeUnit", "NANOSECONDS");
+        attributesMaker.make(timer.getId(), "longTaskTimer").put("baseTimeUnit", "NANOSECONDS");
     Gauge activeTasks =
         new Gauge(
-            timer.getId().getName() + ".active_tasks",
+            timer.getId().getName() + ".activeTasks",
             timer.activeTasks(),
             clock.wallTime(),
             attributes);
     Gauge totalDuration =
         new Gauge(
-            timer.getId().getName() + ".total_duration",
+            timer.getId().getName() + ".totalDuration",
             timer.duration(TimeUnit.NANOSECONDS),
             clock.wallTime(),
             attributes);
