@@ -129,8 +129,7 @@ class NewRelicRegistryTest {
   void testPublishGauge() {
     Gauge expectedGauge =
         new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch =
-        new MetricBatch(singletonList(expectedGauge), new Attributes().put("fail", "heeeeeheeee"));
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), commonAttributes);
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
         .thenReturn(expectedGauge);
