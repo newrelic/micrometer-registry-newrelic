@@ -122,7 +122,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       TimeTracker timeTracker) {
     super(config, clock);
     this.config = config;
-    //TODO would be better to not mutate the commonAttributes passed in to the constructor
+    // TODO would be better to not mutate the commonAttributes passed in to the constructor
     //  best way would be to make a copy of the attributes, but we don't have a mechanism for that
     //  right now
     this.commonAttributes =
