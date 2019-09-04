@@ -43,14 +43,12 @@ import io.micrometer.newrelic.transform.TimerTransformer;
 import io.micrometer.newrelic.util.TimeTracker;
 import java.time.Duration;
 import java.util.Collections;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
