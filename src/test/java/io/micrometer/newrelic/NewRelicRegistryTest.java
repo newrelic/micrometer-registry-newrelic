@@ -9,7 +9,6 @@ package io.micrometer.newrelic;
 
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,6 +48,7 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -105,7 +105,7 @@ class NewRelicRegistryTest {
   void testPublishTimeGauge() {
     Gauge expectedGauge =
         new Gauge("timeGauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), new Attributes().put("laugh", "haha"));
 
     when(timeGaugeTransformer.transform(isA(TimeGauge.class))).thenReturn(expectedGauge);
 
@@ -279,16 +279,4 @@ class NewRelicRegistryTest {
     newRelicRegistry.publish();
     verify(newRelicSender).sendBatch(expectedBatch);
   }
-
-  @Test
-  void testMicrometerSourceTagsSet() {
-    Map<String, Object> attrMap = commonAttributes.asMap();
-    String instrumentationActual = (String)attrMap.get("instrumentation.provider");
-    String collectorActual = (String)attrMap.get("collector.name");
-    String instrumentationExpected = "micrometer";
-    String collectorExpected = "micrometer-registry-newrelic";
-    assertEquals(instrumentationExpected, instrumentationActual);
-    assertEquals(collectorExpected,collectorActual);
-  }
-
 }
