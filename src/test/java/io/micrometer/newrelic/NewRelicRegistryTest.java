@@ -137,6 +137,7 @@ class NewRelicRegistryTest {
     newRelicRegistry.gauge("gauge", singletonList(Tag.of("foo", "bar")), 5);
 
     newRelicRegistry.publish();
+
     verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
