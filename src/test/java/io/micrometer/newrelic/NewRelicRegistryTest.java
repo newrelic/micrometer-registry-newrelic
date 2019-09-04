@@ -50,6 +50,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
@@ -105,7 +106,7 @@ class NewRelicRegistryTest {
   void testPublishTimeGauge() {
     Gauge expectedGauge =
         new Gauge("timeGauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), new Attributes().put("laugh", "haha"));
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), commonAttributes);
 
     when(timeGaugeTransformer.transform(isA(TimeGauge.class))).thenReturn(expectedGauge);
 
@@ -119,7 +120,6 @@ class NewRelicRegistryTest {
             value -> 5);
 
     newRelicRegistry.publish();
-
     verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
@@ -129,7 +129,7 @@ class NewRelicRegistryTest {
   void testPublishGauge() {
     Gauge expectedGauge =
         new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), new Attributes().put("fail", "heeeeeheeee"));
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
         .thenReturn(expectedGauge);
@@ -137,8 +137,10 @@ class NewRelicRegistryTest {
     newRelicRegistry.gauge("gauge", singletonList(Tag.of("foo", "bar")), 5);
 
     newRelicRegistry.publish();
-
-    verify(newRelicSender).sendBatch(expectedBatch);
+    //TODO fail this test so we can remember to fix it once we fix the version of the telemetry SDK
+    // this uses. Will need to do for the other tests as well?
+    Assertions.fail();
+    //verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
