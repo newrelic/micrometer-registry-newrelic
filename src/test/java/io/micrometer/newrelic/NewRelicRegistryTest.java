@@ -118,8 +118,12 @@ class NewRelicRegistryTest {
             value -> 5);
 
     newRelicRegistry.publish();
-    // TODO Replace with verify(newRelicSender).sendBatch(expectedBatch) when SDK dependecy is fixed
-    //  Possibly do this with other tests
+    // TODO
+    //  In order to test, we need to make sure expectedBatch has been constructed with a different
+    //  attributes than the one that was passed to the sender. Batches are mutable, so we can't
+    //  verify this difference when we use the same one for both cases.
+    //  Thus, when the above issue has been updated in the sdk:
+    //  Replace with verify(newRelicSender).sendBatch(expectedBatch) when SDK dependency is fixed
     verify(newRelicSender).sendBatch(Mockito.refEq(expectedBatch));
     verify(timeTracker).tick();
   }
