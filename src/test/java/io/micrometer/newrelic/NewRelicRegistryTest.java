@@ -9,6 +9,7 @@ package io.micrometer.newrelic;
 
 import static java.util.Collections.singleton;
 import static java.util.Collections.singletonList;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.isA;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -43,6 +44,7 @@ import io.micrometer.newrelic.transform.TimerTransformer;
 import io.micrometer.newrelic.util.TimeTracker;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -277,4 +279,16 @@ class NewRelicRegistryTest {
     newRelicRegistry.publish();
     verify(newRelicSender).sendBatch(expectedBatch);
   }
+
+  @Test
+  void testMicrometerSourceTagsSet() {
+    Map<String, Object> attrMap = commonAttributes.asMap();
+    String instrumentationActual = (String)attrMap.get("instrumentation.provider");
+    String collectorActual = (String)attrMap.get("collector.name");
+    String instrumentationExpected = "micrometer";
+    String collectorExpected = "micrometer-registry-newrelic";
+    assertEquals(instrumentationExpected, instrumentationActual);
+    assertEquals(collectorExpected,collectorActual);
+  }
+
 }
