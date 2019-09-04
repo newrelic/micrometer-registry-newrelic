@@ -122,7 +122,10 @@ public class NewRelicRegistry extends StepMeterRegistry {
       TimeTracker timeTracker) {
     super(config, clock);
     this.config = config;
-    this.commonAttributes = commonAttributes;
+    this.commonAttributes =
+        commonAttributes
+            .put("instrumentation.provider", "micrometer")
+            .put("collector.name", "micrometer-registry-newrelic");
     this.newRelicSender = newRelicSender;
     this.timeGaugeTransformer = timeGaugeTransformer;
     this.gaugeTransformer = gaugeTransformer;
