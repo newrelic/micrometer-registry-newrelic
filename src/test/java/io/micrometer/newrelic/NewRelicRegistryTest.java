@@ -47,9 +47,9 @@ import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -118,7 +118,9 @@ class NewRelicRegistryTest {
             value -> 5);
 
     newRelicRegistry.publish();
-    verify(newRelicSender).sendBatch(expectedBatch);
+    // TODO Replace with verify(newRelicSender).sendBatch(expectedBatch) when SDK dependecy is fixed
+    //  Possibly do this with other tests
+    verify(newRelicSender).sendBatch(Mockito.refEq(expectedBatch));
     verify(timeTracker).tick();
   }
 
@@ -127,7 +129,8 @@ class NewRelicRegistryTest {
   void testPublishGauge() {
     Gauge expectedGauge =
         new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), new Attributes().put("fail", "heeeeeheeee"));
+    MetricBatch expectedBatch =
+        new MetricBatch(singletonList(expectedGauge), new Attributes().put("fail", "heeeeeheeee"));
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
         .thenReturn(expectedGauge);
@@ -135,10 +138,7 @@ class NewRelicRegistryTest {
     newRelicRegistry.gauge("gauge", singletonList(Tag.of("foo", "bar")), 5);
 
     newRelicRegistry.publish();
-    //TODO fail this test so we can remember to fix it once we fix the version of the telemetry SDK
-    // this uses. Will need to do for the other tests as well?
-    Assertions.fail();
-    //verify(newRelicSender).sendBatch(expectedBatch);
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
