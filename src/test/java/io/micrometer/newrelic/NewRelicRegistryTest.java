@@ -49,6 +49,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -71,11 +72,17 @@ class NewRelicRegistryTest {
   @Mock private BareMeterTransformer bareMeterTransformer;
   @Mock private HistogramGaugeCustomizer histogramCustomizer;
   private Attributes commonAttributes;
+  private Attributes expectedAttributes;
   private NewRelicRegistry newRelicRegistry;
 
   @BeforeEach
   void setUp() {
     commonAttributes = new Attributes();
+
+    expectedAttributes =
+        new Attributes()
+            .put("instrumentation.provider", "micrometer")
+            .put("collector.name", "micrometer-registry-newrelic");
 
     when(config.batchSize()).thenReturn(10);
     when(config.step()).thenReturn(Duration.ofDays(1));
@@ -103,7 +110,7 @@ class NewRelicRegistryTest {
   void testPublishTimeGauge() {
     Gauge expectedGauge =
         new Gauge("timeGauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), expectedAttributes);
 
     when(timeGaugeTransformer.transform(isA(TimeGauge.class))).thenReturn(expectedGauge);
 
@@ -117,8 +124,9 @@ class NewRelicRegistryTest {
             value -> 5);
 
     newRelicRegistry.publish();
-
-    verify(newRelicSender).sendBatch(expectedBatch);
+    // TODO
+    //  Replace with verify(newRelicSender).sendBatch(expectedBatch) when SDK dependency is fixed
+    verify(newRelicSender).sendBatch(Mockito.refEq(expectedBatch));
     verify(timeTracker).tick();
   }
 
@@ -127,7 +135,7 @@ class NewRelicRegistryTest {
   void testPublishGauge() {
     Gauge expectedGauge =
         new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), expectedAttributes);
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
         .thenReturn(expectedGauge);
@@ -147,7 +155,7 @@ class NewRelicRegistryTest {
     Summary expectedMetric =
         new Summary(
             "tire", 55, 122d, 44d, 99d, now - 1500, now, new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     Timer timer = newRelicRegistry.timer("timer", singletonList(Tag.of("foo", "bar")));
     when(timerTransformer.transform(timer)).thenReturn(singleton(expectedMetric));
@@ -165,7 +173,7 @@ class NewRelicRegistryTest {
     Summary expectedMetric =
         new Summary(
             "tire", 55, 122d, 44d, 99d, now - 1500, now, new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     when(functionTimerTransformer.transform(isA(FunctionTimer.class)))
         .thenReturn(singleton(expectedMetric));
@@ -192,7 +200,7 @@ class NewRelicRegistryTest {
     long now = System.currentTimeMillis();
     Count expectedMetric =
         new Count("dracula", 33, now - 15000, now, new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     when(counterTransformer.transform(isA(Counter.class))).thenReturn(expectedMetric);
 
@@ -211,7 +219,7 @@ class NewRelicRegistryTest {
     Summary expectedMetric =
         new Summary(
             "tire", 55, 122d, 44d, 99d, now - 1500, now, new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     when(longTaskTimerTransformer.transform(isA(LongTaskTimer.class)))
         .thenReturn(Collections.singleton(expectedMetric));
@@ -230,7 +238,7 @@ class NewRelicRegistryTest {
     long now = System.currentTimeMillis();
     Count expectedMetric =
         new Count("dracula", 11.33, now - 15000, now, new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     when(functionCounterTransformer.transform(isA(FunctionCounter.class)))
         .thenReturn(expectedMetric);
@@ -249,7 +257,7 @@ class NewRelicRegistryTest {
     long now = System.currentTimeMillis();
     Metric expectedMetric =
         new Count("quick", 11.33, now - 15000, now, new Attributes().put("foo", "bar"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     when(distributionSummaryTransformer.transform(isA(DistributionSummary.class)))
         .thenReturn(singleton(expectedMetric));
@@ -266,7 +274,7 @@ class NewRelicRegistryTest {
   void testMetricFiltersAreSupported() {
     long now = System.currentTimeMillis();
     Gauge expectedMetric = new Gauge("8_oh_eight", 34, now, new Attributes().put("a", "b"));
-    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), commonAttributes);
+    MetricBatch expectedBatch = new MetricBatch(singletonList(expectedMetric), expectedAttributes);
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
         .thenReturn(expectedMetric);
