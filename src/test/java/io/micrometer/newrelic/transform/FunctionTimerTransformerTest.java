@@ -12,9 +12,9 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Count;
-import com.newrelic.telemetry.Gauge;
-import com.newrelic.telemetry.Metric;
+import com.newrelic.telemetry.metrics.Count;
+import com.newrelic.telemetry.metrics.Gauge;
+import com.newrelic.telemetry.metrics.Metric;
 import io.micrometer.core.instrument.FunctionTimer;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tags;

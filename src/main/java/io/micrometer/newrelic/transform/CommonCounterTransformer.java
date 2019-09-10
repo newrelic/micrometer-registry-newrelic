@@ -8,7 +8,7 @@
 package io.micrometer.newrelic.transform;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Count;
+import com.newrelic.telemetry.metrics.Count;
 import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.newrelic.util.TimeTracker;
 import java.util.function.Function;

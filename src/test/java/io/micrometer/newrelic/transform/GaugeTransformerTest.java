@@ -49,9 +49,9 @@ class GaugeTransformerTest {
     when(attributesMaker.make(micrometerGauge.getId(), SOURCE_TYPE)).thenReturn(expectedAttrs);
     when(clock.wallTime()).thenReturn(now);
 
-    com.newrelic.telemetry.Gauge result = testClass.transform(micrometerGauge);
-    com.newrelic.telemetry.Gauge expectedGauge =
-        new com.newrelic.telemetry.Gauge(GAUGE_NAME, 77.3, now, expectedAttrs);
+    com.newrelic.telemetry.metrics.Gauge result = testClass.transform(micrometerGauge);
+    com.newrelic.telemetry.metrics.Gauge expectedGauge =
+        new com.newrelic.telemetry.metrics.Gauge(GAUGE_NAME, 77.3, now, expectedAttrs);
 
     assertEquals(expectedGauge, result);
   }

@@ -9,8 +9,8 @@ package io.micrometer.newrelic.transform;
 
 import static java.util.stream.StreamSupport.stream;
 
-import com.newrelic.telemetry.Gauge;
-import com.newrelic.telemetry.Metric;
+import com.newrelic.telemetry.metrics.Gauge;
+import com.newrelic.telemetry.metrics.Metric;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Meter;
 import java.util.Collection;

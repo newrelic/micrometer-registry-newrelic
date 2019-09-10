@@ -12,8 +12,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Gauge;
-import com.newrelic.telemetry.Metric;
+import com.newrelic.telemetry.metrics.Gauge;
+import com.newrelic.telemetry.metrics.Metric;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.LongTaskTimer;
 import io.micrometer.core.instrument.Meter.Id;

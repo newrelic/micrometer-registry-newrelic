@@ -12,7 +12,7 @@ import static io.micrometer.newrelic.json.JsonUtil.number;
 import static io.micrometer.newrelic.json.JsonUtil.object;
 import static io.micrometer.newrelic.json.JsonUtil.string;
 
-import com.newrelic.telemetry.Count;
+import com.newrelic.telemetry.metrics.Count;
 import java.util.function.Function;
 
 public class CountToJson implements Function<Count, String> {
