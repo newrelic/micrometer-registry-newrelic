@@ -49,7 +49,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
@@ -82,7 +81,8 @@ class NewRelicRegistryTest {
     expectedAttributes =
         new Attributes()
             .put("instrumentation.provider", "micrometer")
-            .put("collector.name", "micrometer-registry-newrelic");
+            .put("collector.name", "micrometer-registry-newrelic")
+            .put("collector.version", "Unknown Version");
 
     when(config.batchSize()).thenReturn(10);
     when(config.step()).thenReturn(Duration.ofDays(1));
@@ -124,9 +124,8 @@ class NewRelicRegistryTest {
             value -> 5);
 
     newRelicRegistry.publish();
-    // TODO
-    //  Replace with verify(newRelicSender).sendBatch(expectedBatch) when SDK dependency is fixed
-    verify(newRelicSender).sendBatch(Mockito.refEq(expectedBatch));
+
+    verify(newRelicSender).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
