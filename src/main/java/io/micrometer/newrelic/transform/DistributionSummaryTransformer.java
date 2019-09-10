@@ -67,6 +67,6 @@ public class DistributionSummaryTransformer {
                     now,
                     new Attributes()
                         .put("source.type", "distributionSummary")
-                        .put("newRelic.percentile", valueAtPercentile.percentile() * 100d)));
+                        .put("percentile", valueAtPercentile.percentile() * 100d)));
   }
 }
