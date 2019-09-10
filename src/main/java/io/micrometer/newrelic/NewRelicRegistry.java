@@ -12,6 +12,7 @@ import com.newrelic.telemetry.TelemetryClient;
 import com.newrelic.telemetry.metrics.Metric;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
+import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
@@ -85,22 +86,15 @@ public class NewRelicRegistry extends StepMeterRegistry {
   private NewRelicRegistry(
       NewRelicRegistryConfig config,
       Clock clock,
-      HttpSender httpSender,
       Attributes commonAttributes,
       AttributesMaker attributesMaker,
-      TimeTracker timeTracker)
-      throws MalformedURLException {
+      TimeTracker timeTracker,
+      MetricBatchSender metricBatchSender) {
     this(
         config,
         clock,
         commonAttributes,
-        new TelemetryClient(
-            MetricBatchSender.builder()
-                .apiKey(config.apiKey())
-                .httpPoster(new MicrometerHttpPoster(httpSender))
-                .uriOverride(URI.create(config.uri()))
-                .build(),
-            null),
+        new TelemetryClient(metricBatchSender, null),
         new TimeGaugeTransformer(new GaugeTransformer(clock, attributesMaker)),
         new GaugeTransformer(clock, attributesMaker),
         new TimerTransformer(timeTracker),
@@ -249,17 +243,29 @@ public class NewRelicRegistry extends StepMeterRegistry {
     }
 
     public NewRelicRegistry build() {
-      try {
-        return new NewRelicRegistry(
-            config,
-            Clock.SYSTEM,
-            httpSender,
-            commonAttributes,
-            new AttributesMaker(),
-            new TimeTracker(Clock.SYSTEM));
-      } catch (MalformedURLException e) {
-        throw new RuntimeException("Failed to configure the NewRelicRegistry", e);
+      MetricBatchSender metricBatchSender = createMetricBatchSender();
+      return new NewRelicRegistry(
+          config,
+          Clock.SYSTEM,
+          commonAttributes,
+          new AttributesMaker(),
+          new TimeTracker(Clock.SYSTEM),
+          metricBatchSender);
+    }
+
+    private MetricBatchSender createMetricBatchSender() {
+      MetricBatchSenderBuilder metricBatchSenderBuilder =
+          MetricBatchSender.builder()
+              .apiKey(config.apiKey())
+              .httpPoster(new MicrometerHttpPoster(httpSender));
+      if (config.uri() != null) {
+        try {
+          metricBatchSenderBuilder.uriOverride(URI.create(config.uri()));
+        } catch (MalformedURLException e) {
+          throw new RuntimeException("Invalid URI for the metric API : " + config.uri(), e);
+        }
       }
+      return metricBatchSenderBuilder.build();
     }
   }
 }

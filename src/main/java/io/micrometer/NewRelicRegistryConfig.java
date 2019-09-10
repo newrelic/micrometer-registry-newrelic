@@ -25,15 +25,10 @@ public interface NewRelicRegistryConfig extends StepRegistryConfig {
   }
 
   /**
-   * @return The URI for the New Relic metric API. Please contact open-instrumentation@newrelic.com
-   *     to get access.
+   * @return The URI for the New Relic metric API. Only necessary if you need to override the
+   *     default URI.
    */
   default String uri() {
-    String uri = get(prefix() + ".uri");
-    if (uri == null) {
-      throw new MissingRequiredConfigurationException(
-          "uri must be set to report metrics to New Relic");
-    }
-    return uri;
+    return get(prefix() + ".uri");
   }
 }
