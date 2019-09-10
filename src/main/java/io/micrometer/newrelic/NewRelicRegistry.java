@@ -120,7 +120,8 @@ public class NewRelicRegistry extends StepMeterRegistry {
     super(config, clock);
     this.config = config;
     this.commonAttributes =
-        commonAttributes.copy()
+        commonAttributes
+            .copy()
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic");
     this.newRelicSender = newRelicSender;
@@ -221,9 +222,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       return this;
     }
 
-    /**
-     * Supply a set of attributes that should be applied to all metrics.
-     */
+    /** Supply a set of attributes that should be applied to all metrics. */
     public NewRelicRegistryBuilder commonAttributes(Attributes commonAttributes) {
       this.commonAttributes = commonAttributes;
       return this;

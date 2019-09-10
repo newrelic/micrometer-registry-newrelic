@@ -14,12 +14,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.newrelic.telemetry.Attributes;
+import com.newrelic.telemetry.TelemetryClient;
 import com.newrelic.telemetry.metrics.Count;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.Summary;
-import com.newrelic.telemetry.TelemetryClient;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
