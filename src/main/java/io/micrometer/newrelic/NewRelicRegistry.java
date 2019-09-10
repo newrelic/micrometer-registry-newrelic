@@ -48,9 +48,16 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class NewRelicRegistry extends StepMeterRegistry {
+
+  private static final Logger LOG = LoggerFactory.getLogger(NewRelicRegistry.class);
+  private static final String implementationVersion;
 
   private final NewRelicRegistryConfig config;
   private final TelemetryClient newRelicSender;
@@ -67,6 +74,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
   private final BareMeterTransformer bareMeterTransformer;
   private final TimeTracker timeTracker;
   private final HistogramGaugeCustomizer histogramCustomizer;
+
+  static {
+    Package thisPackage = NewRelicRegistry.class.getPackage();
+    implementationVersion =
+        Optional.ofNullable(thisPackage.getImplementationVersion()).orElse("Unknown Version");
+  }
 
   // visible for testing
   private NewRelicRegistry(
@@ -120,9 +133,11 @@ public class NewRelicRegistry extends StepMeterRegistry {
     super(config, clock);
     this.config = config;
     this.commonAttributes =
-        commonAttributes.copy()
+        commonAttributes
+            .copy()
             .put("instrumentation.provider", "micrometer")
-            .put("collector.name", "micrometer-registry-newrelic");
+            .put("collector.name", "micrometer-registry-newrelic")
+            .put("collector.version", implementationVersion);
     this.newRelicSender = newRelicSender;
     this.timeGaugeTransformer = timeGaugeTransformer;
     this.gaugeTransformer = gaugeTransformer;
@@ -135,6 +150,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
     this.bareMeterTransformer = bareMeterTransformer;
     this.timeTracker = timeTracker;
     this.histogramCustomizer = histogramCustomizer;
+  }
+
+  @Override
+  public void start(ThreadFactory threadFactory) {
+    LOG.info("New Relic Registry: Version " + implementationVersion + " is starting");
+    super.start(threadFactory);
   }
 
   @Override
@@ -221,9 +242,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       return this;
     }
 
-    /**
-     * Supply a set of attributes that should be applied to all metrics.
-     */
+    /** Supply a set of attributes that should be applied to all metrics. */
     public NewRelicRegistryBuilder commonAttributes(Attributes commonAttributes) {
       this.commonAttributes = commonAttributes;
       return this;
