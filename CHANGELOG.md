@@ -4,6 +4,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.2.1] - 2019-09-10
+- Change: Don't require the metric API URI to be provided, but use the default by default.
+
 ## [0.2.0] - 2019-09-10
 - update to NewRelic telemetry SDK 0.3.1
 - at registry startup, log the version of the exporter
