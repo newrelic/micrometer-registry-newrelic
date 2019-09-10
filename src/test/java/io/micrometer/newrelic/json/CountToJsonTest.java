@@ -10,7 +10,7 @@ package io.micrometer.newrelic.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Count;
+import com.newrelic.telemetry.metrics.Count;
 import org.junit.jupiter.api.Test;
 
 class CountToJsonTest {

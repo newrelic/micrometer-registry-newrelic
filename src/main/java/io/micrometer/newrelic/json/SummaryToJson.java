@@ -12,7 +12,7 @@ import static io.micrometer.newrelic.json.JsonUtil.number;
 import static io.micrometer.newrelic.json.JsonUtil.object;
 import static io.micrometer.newrelic.json.JsonUtil.string;
 
-import com.newrelic.telemetry.Summary;
+import com.newrelic.telemetry.metrics.Summary;
 import java.util.function.Function;
 
 public class SummaryToJson implements Function<Summary, String> {

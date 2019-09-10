@@ -10,9 +10,9 @@ package io.micrometer.newrelic.transform;
 import static java.util.stream.Collectors.toList;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Count;
-import com.newrelic.telemetry.Gauge;
-import com.newrelic.telemetry.Metric;
+import com.newrelic.telemetry.metrics.Count;
+import com.newrelic.telemetry.metrics.Gauge;
+import com.newrelic.telemetry.metrics.Metric;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.distribution.HistogramSnapshot;
 import io.micrometer.newrelic.util.TimeTracker;

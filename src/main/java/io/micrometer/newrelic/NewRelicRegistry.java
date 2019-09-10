@@ -8,10 +8,10 @@
 package io.micrometer.newrelic;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Metric;
-import com.newrelic.telemetry.MetricBatch;
-import com.newrelic.telemetry.MetricBatchSender;
 import com.newrelic.telemetry.TelemetryClient;
+import com.newrelic.telemetry.metrics.Metric;
+import com.newrelic.telemetry.metrics.MetricBatch;
+import com.newrelic.telemetry.metrics.MetricBatchSender;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
@@ -31,8 +31,6 @@ import io.micrometer.core.instrument.step.StepTimer;
 import io.micrometer.core.instrument.util.MeterPartition;
 import io.micrometer.core.ipc.http.HttpSender;
 import io.micrometer.core.ipc.http.HttpUrlConnectionSender;
-import io.micrometer.newrelic.json.AttributesJsonImpl;
-import io.micrometer.newrelic.json.MetricToJson;
 import io.micrometer.newrelic.transform.AttributesMaker;
 import io.micrometer.newrelic.transform.BareMeterTransformer;
 import io.micrometer.newrelic.transform.CommonCounterTransformer;
@@ -84,13 +82,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
         clock,
         commonAttributes,
         new TelemetryClient(
-            MetricBatchSender.builder(
-                    config.apiKey(),
-                    new MicrometerHttpPoster(httpSender),
-                    new MetricToJson(),
-                    new AttributesJsonImpl())
+            MetricBatchSender.builder()
+                .apiKey(config.apiKey())
+                .httpPoster(new MicrometerHttpPoster(httpSender))
                 .uriOverride(URI.create(config.uri()))
-                .build()),
+                .build(),
+            null),
         new TimeGaugeTransformer(new GaugeTransformer(clock, attributesMaker)),
         new GaugeTransformer(clock, attributesMaker),
         new TimerTransformer(timeTracker),
@@ -122,11 +119,9 @@ public class NewRelicRegistry extends StepMeterRegistry {
       TimeTracker timeTracker) {
     super(config, clock);
     this.config = config;
-    // TODO would be better to not mutate the commonAttributes passed in to the constructor
-    //  best way would be to make a copy of the attributes, but we don't have a mechanism for that
-    //  right now
     this.commonAttributes =
         commonAttributes
+            .copy()
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic");
     this.newRelicSender = newRelicSender;

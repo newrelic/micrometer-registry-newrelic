@@ -12,7 +12,7 @@ import static io.micrometer.newrelic.json.JsonUtil.number;
 import static io.micrometer.newrelic.json.JsonUtil.object;
 import static io.micrometer.newrelic.json.JsonUtil.string;
 
-import com.newrelic.telemetry.Gauge;
+import com.newrelic.telemetry.metrics.Gauge;
 import java.util.function.Function;
 
 public class GaugeToJson implements Function<Gauge, String> {

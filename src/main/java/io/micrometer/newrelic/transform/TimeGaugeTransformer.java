@@ -7,7 +7,7 @@
 
 package io.micrometer.newrelic.transform;
 
-import com.newrelic.telemetry.Metric;
+import com.newrelic.telemetry.metrics.Metric;
 import io.micrometer.core.instrument.TimeGauge;
 
 public class TimeGaugeTransformer {

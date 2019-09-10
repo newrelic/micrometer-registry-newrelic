@@ -10,7 +10,7 @@ package io.micrometer.newrelic.json;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.Gauge;
+import com.newrelic.telemetry.metrics.Gauge;
 import org.junit.jupiter.api.Test;
 
 class GaugeToJsonTest {
