@@ -39,7 +39,6 @@ class TimerTransformerTest {
     Attributes standardAttributes =
         new Attributes()
             .put("foo", "bar")
-            .put("source.type", "timer")
             .put("description", "description")
             .put("baseUnit", "units");
     Count count = new Count("timerName.count", 1000, now - 2000, now, standardAttributes);

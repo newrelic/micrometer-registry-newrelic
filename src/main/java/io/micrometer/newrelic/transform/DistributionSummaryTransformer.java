@@ -65,8 +65,6 @@ public class DistributionSummaryTransformer {
                     distributionSummary.getId().getName() + ".percentiles",
                     valueAtPercentile.value(),
                     now,
-                    new Attributes()
-                        .put("source.type", "distributionSummary")
-                        .put("percentile", valueAtPercentile.percentile() * 100d)));
+                    new Attributes().put("percentile", valueAtPercentile.percentile() * 100d)));
   }
 }

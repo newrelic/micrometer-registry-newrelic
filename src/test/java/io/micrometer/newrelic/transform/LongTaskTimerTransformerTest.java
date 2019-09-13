@@ -36,7 +36,6 @@ class LongTaskTimerTransformerTest {
         new Attributes()
             .put("spoon", "pup")
             .put("description", "des des")
-            .put("source.type", "longTaskTimer")
             .put("baseUnit", "grams")
             .put("baseTimeUnit", "NANOSECONDS");
 

@@ -19,7 +19,7 @@ public class AttributesMaker {
     String baseUnit = id.getBaseUnit();
     String description = id.getDescription();
 
-    Attributes attributes = new Attributes().put("source.type", sourceType);
+    Attributes attributes = new Attributes();
 
     if (description != null) {
       attributes.put("description", description);
