@@ -43,7 +43,6 @@ class FunctionTimerTransformerTest {
     Attributes expectedAttributes =
         new Attributes()
             .put("description", "timerDescription")
-            .put("source.type", "functionTimer")
             .put("baseUnit", "tomatoes")
             .put("foo", "bar");
 

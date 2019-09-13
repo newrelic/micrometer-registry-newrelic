@@ -68,17 +68,13 @@ class DistributionSummaryTransformerTest {
             metricName + ".percentiles",
             valuePercentiles[0].value(),
             now,
-            new Attributes()
-                .put("source.type", "distributionSummary")
-                .put("percentile", valuePercentiles[0].percentile() * 100d));
+            new Attributes().put("percentile", valuePercentiles[0].percentile() * 100d));
     Metric expectedPercentile2 =
         new Gauge(
             metricName + ".percentiles",
             valuePercentiles[1].value(),
             now,
-            new Attributes()
-                .put("source.type", "distributionSummary")
-                .put("percentile", valuePercentiles[1].percentile() * 100d));
+            new Attributes().put("percentile", valuePercentiles[1].percentile() * 100d));
 
     Collection<Metric> expected =
         Arrays.asList(

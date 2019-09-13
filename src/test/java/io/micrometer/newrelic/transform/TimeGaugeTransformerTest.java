@@ -28,11 +28,7 @@ class TimeGaugeTransformerTest {
   @Test
   void testTransform() {
     Attributes expectedAttributes =
-        new Attributes()
-            .put("description", "something")
-            .put("source.type", "timeGauge")
-            .put("baseUnit", "b")
-            .put("foo", "bar");
+        new Attributes().put("description", "something").put("baseUnit", "b").put("foo", "bar");
     long now = System.currentTimeMillis();
     Id id = new Id("aaa", Tags.of(Tag.of("foo", "bar")), "b", "something", Type.GAUGE);
     Clock clock = mock(Clock.class);
