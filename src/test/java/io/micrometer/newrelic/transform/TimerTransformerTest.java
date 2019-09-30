@@ -8,7 +8,6 @@
 package io.micrometer.newrelic.transform;
 
 import static java.util.Collections.singleton;
-import static java.util.Collections.singletonList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -22,7 +21,6 @@ import io.micrometer.core.instrument.Timer;
 import io.micrometer.newrelic.util.TimeTracker;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
 import org.junit.jupiter.api.Test;
