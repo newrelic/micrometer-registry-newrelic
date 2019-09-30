@@ -7,6 +7,7 @@
 
 package io.micrometer.newrelic.transform;
 
+import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
@@ -63,6 +64,32 @@ class TimerTransformerTest {
     Collection<Metric> results = timerTransformer.transform(timer);
 
     Collection<Metric> expected = new HashSet<>(Arrays.asList(count, totalTime, max, mean));
+    assertEquals(expected, new HashSet<>(results));
+  }
+
+  @Test
+  void testSkippingGaugesWhenCountIsZero() {
+    long now = System.currentTimeMillis();
+    Attributes standardAttributes =
+        new Attributes()
+            .put("foo", "bar")
+            .put("description", "description")
+            .put("baseUnit", "units");
+    Count count = new Count("timerName.count", 0, now - 2000, now, standardAttributes);
+
+    when(timeTracker.getCurrentTime()).thenReturn(now);
+    when(timeTracker.getPreviousTime()).thenReturn(now - 2000);
+
+    when(timer.getId())
+        .thenReturn(
+            new Meter.Id(
+                "timerName", Tags.of("foo", "bar"), "units", "description", Meter.Type.TIMER));
+    when(timer.count()).thenReturn(0L);
+
+    TimerTransformer timerTransformer = new TimerTransformer(timeTracker);
+    Collection<Metric> results = timerTransformer.transform(timer);
+
+    Collection<Metric> expected = singleton(count);
     assertEquals(expected, new HashSet<>(results));
   }
 }
