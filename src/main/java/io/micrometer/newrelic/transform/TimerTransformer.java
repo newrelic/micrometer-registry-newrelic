@@ -7,6 +7,8 @@
 
 package io.micrometer.newrelic.transform;
 
+import static java.util.Collections.singleton;
+
 import com.newrelic.telemetry.metrics.Count;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
@@ -36,7 +38,9 @@ public class TimerTransformer {
             timeTracker.getPreviousTime(),
             now,
             attributesMaker.make(id, "timer"));
-
+    if (timer.count() <= 0) {
+      return singleton(count);
+    }
     Gauge total =
         new Gauge(
             id.getName() + ".totalTime",
@@ -55,7 +59,6 @@ public class TimerTransformer {
             timer.mean(timer.baseTimeUnit()),
             now,
             attributesMaker.make(id, "timer"));
-
     return Arrays.asList(count, total, max, mean);
   }
 }
