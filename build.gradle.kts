@@ -39,7 +39,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
     testImplementation("org.mockito:mockito-core:3.0.0")
     testImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
-    testImplementation("org.mock-server:mockserver-netty:5.6.0")
+    testImplementation("org.mock-server:mockserver-netty:5.6.1")
 }
 
 val jar: Jar by tasks
