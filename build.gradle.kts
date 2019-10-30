@@ -31,8 +31,12 @@ googleJavaFormat {
 }
 
 dependencies {
-    api("io.micrometer:micrometer-core:1.2.0")
+    api("io.micrometer:micrometer-core:1.2.2")
     api("com.newrelic.telemetry:telemetry:0.3.1")
+    //note: these are transitive dependencies from micrometer, but needed to be upgraded due to a security vulnerability
+    implementation("com.fasterxml.jackson.core:jackson-core:2.9.9")
+    implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.9")
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.9.3")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.26")

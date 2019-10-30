@@ -12,11 +12,11 @@ for micrometer metrics than Custom Events.
 
 1) via gradle: 
   
-    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.2.2'`
+    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.2.3'`
 
     Note: you might need to also include a dependency on micrometer-core itself, for example:
 
-    `implementation 'io.micrometer:micrometer-core:1.2.0'`
+    `implementation 'io.micrometer:micrometer-core:1.2.2'`
     
 2) via maven:
 
@@ -24,7 +24,7 @@ for micrometer metrics than Custom Events.
     <dependency>
         <groupId>com.newrelic.telemetry</groupId>
         <artifactId>micrometer-registry-new-relic</artifactId>
-        <version>0.2.2</version>
+        <version>0.2.3</version>
     </dependency>
 ```
 
