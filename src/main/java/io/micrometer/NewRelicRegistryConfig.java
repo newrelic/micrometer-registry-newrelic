@@ -33,8 +33,9 @@ public interface NewRelicRegistryConfig extends StepRegistryConfig {
   }
 
   /**
-   * Return the service name which this registry will report as. Maps to the "service.name" attribute
-   * on the metrics.
+   * Return the service name which this registry will report as. Maps to the "service.name"
+   * attribute on the metrics.
+   *
    * @return The Service Name.
    */
   default String serviceName() {
