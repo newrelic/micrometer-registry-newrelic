@@ -82,10 +82,11 @@ class NewRelicRegistryTest {
         new Attributes()
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic")
-            .put("collector.version", "Unknown Version");
-
+            .put("collector.version", "Unknown Version")
+            .put("service.name", "my awesome service");
     when(config.batchSize()).thenReturn(10);
     when(config.step()).thenReturn(Duration.ofDays(1));
+    when(config.serviceName()).thenReturn("my awesome service");
     newRelicRegistry =
         new NewRelicRegistry(
             config,
@@ -135,6 +136,27 @@ class NewRelicRegistryTest {
     Gauge expectedGauge =
         new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
     MetricBatch expectedBatch = new MetricBatch(singletonList(expectedGauge), expectedAttributes);
+
+    when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
+        .thenReturn(expectedGauge);
+
+    newRelicRegistry.gauge("gauge", singletonList(Tag.of("foo", "bar")), 5);
+
+    newRelicRegistry.publish();
+
+    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(timeTracker).tick();
+  }
+
+  @Test
+  @DisplayName("service name can be set at the top level")
+  void testServiceName() {
+    Gauge expectedGauge =
+        new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
+    MetricBatch expectedBatch =
+        new MetricBatch(
+            singletonList(expectedGauge),
+            expectedAttributes.put("service.name", "my awesome service"));
 
     when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
         .thenReturn(expectedGauge);
