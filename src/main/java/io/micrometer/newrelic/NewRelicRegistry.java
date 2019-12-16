@@ -132,6 +132,9 @@ public class NewRelicRegistry extends StepMeterRegistry {
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic")
             .put("collector.version", implementationVersion);
+    if (config.serviceName() != null) {
+      this.commonAttributes.put("service.name", config.serviceName());
+    }
     this.newRelicSender = newRelicSender;
     this.timeGaugeTransformer = timeGaugeTransformer;
     this.gaugeTransformer = gaugeTransformer;

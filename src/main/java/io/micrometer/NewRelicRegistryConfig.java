@@ -31,4 +31,14 @@ public interface NewRelicRegistryConfig extends StepRegistryConfig {
   default String uri() {
     return get(prefix() + ".uri");
   }
+
+  /**
+   * Return the service name which this registry will report as. Maps to the "service.name"
+   * attribute on the metrics.
+   *
+   * @return The Service Name.
+   */
+  default String serviceName() {
+    return null;
+  }
 }
