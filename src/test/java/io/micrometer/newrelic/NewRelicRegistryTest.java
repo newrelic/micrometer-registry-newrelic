@@ -82,7 +82,7 @@ class NewRelicRegistryTest {
         new Attributes()
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic")
-            .put("collector.version", "Unknown Version")
+            .put("collector.version", "UnknownVersion")
             .put("service.name", "my awesome service");
     when(config.batchSize()).thenReturn(10);
     when(config.step()).thenReturn(Duration.ofDays(1));

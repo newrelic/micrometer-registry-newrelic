@@ -79,7 +79,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
   static {
     Package thisPackage = NewRelicRegistry.class.getPackage();
     implementationVersion =
-        Optional.ofNullable(thisPackage.getImplementationVersion()).orElse("Unknown Version");
+        Optional.ofNullable(thisPackage.getImplementationVersion()).orElse("UnknownVersion");
   }
 
   // visible for testing
@@ -260,7 +260,8 @@ public class NewRelicRegistry extends StepMeterRegistry {
       MetricBatchSenderBuilder metricBatchSenderBuilder =
           MetricBatchSender.builder()
               .apiKey(config.apiKey())
-              .httpPoster(new MicrometerHttpPoster(httpSender));
+              .httpPoster(new MicrometerHttpPoster(httpSender))
+              .secondaryUserAgent("NewRelic-Micrometer-Exporter", implementationVersion);
       if (config.uri() != null) {
         try {
           metricBatchSenderBuilder.uriOverride(URI.create(config.uri()));
