@@ -1,8 +1,6 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic.transform;
@@ -12,9 +10,9 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.metrics.Count;
 import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
+import com.newrelic.telemetry.metrics.Summary;
 import io.micrometer.core.instrument.DistributionSummary;
 import io.micrometer.core.instrument.Meter.Id;
 import io.micrometer.core.instrument.Meter.Type;
@@ -58,10 +56,16 @@ class DistributionSummaryTransformerTest {
         };
     Attributes summaryAttributes = new Attributes().put("stuff", "things");
 
-    Metric expectedCount =
-        new Count(metricName + ".count", snapshotCount, before, now, summaryAttributes);
-    Metric expectedTotal = new Gauge(metricName + ".total", snapshotTotal, now, summaryAttributes);
-    Metric expectedMax = new Gauge(metricName + ".max", snapshotMax, now, summaryAttributes);
+    Metric expectedSummary =
+        new Summary(
+            metricName + ".summary",
+            snapshotCount,
+            snapshotTotal,
+            Double.NaN,
+            snapshotMax,
+            before,
+            now,
+            summaryAttributes);
 
     Metric expectedPercentile1 =
         new Gauge(
@@ -77,8 +81,7 @@ class DistributionSummaryTransformerTest {
             new Attributes().put("percentile", valuePercentiles[1].percentile() * 100d));
 
     Collection<Metric> expected =
-        Arrays.asList(
-            expectedCount, expectedTotal, expectedMax, expectedPercentile1, expectedPercentile2);
+        Arrays.asList(expectedSummary, expectedPercentile1, expectedPercentile2);
 
     TimeTracker timeTracker = mock(TimeTracker.class);
     AttributesMaker attributesMaker = mock(AttributesMaker.class);
