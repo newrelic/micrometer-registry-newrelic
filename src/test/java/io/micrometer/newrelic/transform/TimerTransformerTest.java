@@ -1,8 +1,6 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic.transform;
@@ -12,14 +10,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.metrics.Count;
-import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
+import com.newrelic.telemetry.metrics.Summary;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.core.instrument.Timer;
 import io.micrometer.newrelic.util.TimeTracker;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.concurrent.TimeUnit;
@@ -42,10 +38,10 @@ class TimerTransformerTest {
             .put("foo", "bar")
             .put("description", "description")
             .put("baseUnit", "units");
-    Count count = new Count("timerName.count", 1000, now - 2000, now, standardAttributes);
-    Gauge totalTime = new Gauge("timerName.totalTime", 20000, now, standardAttributes);
-    Gauge max = new Gauge("timerName.max", 5000, now, standardAttributes);
-    Gauge mean = new Gauge("timerName.mean", 500, now, standardAttributes);
+
+    Summary summary =
+        new Summary(
+            "timerName", 1000, 20000, Double.NaN, 5000, now - 2000, now, standardAttributes);
 
     when(timeTracker.getCurrentTime()).thenReturn(now);
     when(timeTracker.getPreviousTime()).thenReturn(now - 2000);
@@ -58,12 +54,11 @@ class TimerTransformerTest {
     when(timer.totalTime(TimeUnit.SECONDS)).thenReturn(20000d);
     when(timer.baseTimeUnit()).thenReturn(TimeUnit.SECONDS);
     when(timer.max(TimeUnit.SECONDS)).thenReturn(5000d);
-    when(timer.mean(TimeUnit.SECONDS)).thenReturn(500d);
 
     TimerTransformer timerTransformer = new TimerTransformer(timeTracker);
     Collection<Metric> results = timerTransformer.transform(timer);
 
-    Collection<Metric> expected = new HashSet<>(Arrays.asList(count, totalTime, max, mean));
+    Collection<Metric> expected = singleton(summary);
     assertEquals(expected, new HashSet<>(results));
   }
 
@@ -75,7 +70,9 @@ class TimerTransformerTest {
             .put("foo", "bar")
             .put("description", "description")
             .put("baseUnit", "units");
-    Count count = new Count("timerName.count", 0, now - 2000, now, standardAttributes);
+
+    Summary summary =
+        new Summary("timerName", 0, 0, Double.NaN, 0, now - 2000, now, standardAttributes);
 
     when(timeTracker.getCurrentTime()).thenReturn(now);
     when(timeTracker.getPreviousTime()).thenReturn(now - 2000);
@@ -89,7 +86,7 @@ class TimerTransformerTest {
     TimerTransformer timerTransformer = new TimerTransformer(timeTracker);
     Collection<Metric> results = timerTransformer.transform(timer);
 
-    Collection<Metric> expected = singleton(count);
+    Collection<Metric> expected = singleton(summary);
     assertEquals(expected, new HashSet<>(results));
   }
 }
