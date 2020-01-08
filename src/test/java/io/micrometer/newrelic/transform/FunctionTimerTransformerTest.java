@@ -1,29 +1,23 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic.transform;
 
-import static java.util.stream.Collectors.toSet;
+import static java.util.Collections.singleton;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 import com.newrelic.telemetry.Attributes;
-import com.newrelic.telemetry.metrics.Count;
-import com.newrelic.telemetry.metrics.Gauge;
 import com.newrelic.telemetry.metrics.Metric;
+import com.newrelic.telemetry.metrics.Summary;
 import io.micrometer.core.instrument.FunctionTimer;
 import io.micrometer.core.instrument.Meter;
 import io.micrometer.core.instrument.Tags;
 import io.micrometer.newrelic.util.TimeTracker;
 import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
 import java.util.concurrent.TimeUnit;
-import java.util.stream.Stream;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
@@ -57,16 +51,21 @@ class FunctionTimerTransformerTest {
     when(functionTimer.getId()).thenReturn(id);
     when(functionTimer.count()).thenReturn(55d);
     when(functionTimer.totalTime(TimeUnit.NANOSECONDS)).thenReturn(10000d);
-    when(functionTimer.mean(TimeUnit.NANOSECONDS)).thenReturn(50d);
     when(timeTracker.getPreviousTime()).thenReturn(before);
     when(timeTracker.getCurrentTime()).thenReturn(now);
 
-    Count count = new Count("functionTimerName.count", 55L, before, now, expectedAttributes);
-    Gauge totalTime = new Gauge("functionTimerName.totalTime", 10000L, now, expectedAttributes);
-    Gauge mean = new Gauge("functionTimerName.mean", 50L, now, expectedAttributes);
+    Summary summary =
+        new Summary(
+            "functionTimerName",
+            55,
+            10000,
+            Double.NaN,
+            Double.NaN,
+            before,
+            now,
+            expectedAttributes);
     Collection<Metric> metrics = functionTimerTransformer.transform(functionTimer);
 
-    Set<Metric> expected = Stream.of(count, totalTime, mean).collect(toSet());
-    assertEquals(expected, new HashSet<>(metrics));
+    assertEquals(singleton(summary), metrics);
   }
 }
