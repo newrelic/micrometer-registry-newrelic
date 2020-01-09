@@ -1,8 +1,6 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic;
@@ -61,7 +59,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
   private static final String implementationVersion;
 
   private final NewRelicRegistryConfig config;
-  private final TelemetryClient newRelicSender;
+  private final TelemetryClient telemetryClient;
   private final Attributes commonAttributes;
   private final TimeGaugeTransformer timeGaugeTransformer;
   private final GaugeTransformer gaugeTransformer;
@@ -112,7 +110,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       NewRelicRegistryConfig config,
       Clock clock,
       Attributes commonAttributes,
-      TelemetryClient newRelicSender,
+      TelemetryClient telemetryClient,
       TimeGaugeTransformer timeGaugeTransformer,
       GaugeTransformer gaugeTransformer,
       TimerTransformer timerTransformer,
@@ -135,7 +133,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
     if (config.serviceName() != null) {
       this.commonAttributes.put("service.name", config.serviceName());
     }
-    this.newRelicSender = newRelicSender;
+    this.telemetryClient = telemetryClient;
     this.timeGaugeTransformer = timeGaugeTransformer;
     this.gaugeTransformer = gaugeTransformer;
     this.timerTransformer = timerTransformer;
@@ -182,7 +180,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
               metrics.addAll(bareMeterTransformer.transform(meter));
             }
           });
-      newRelicSender.sendBatch(new MetricBatch(metrics, commonAttributes));
+      telemetryClient.sendBatch(new MetricBatch(metrics, commonAttributes));
     }
     timeTracker.tick();
   }
@@ -262,6 +260,9 @@ public class NewRelicRegistry extends StepMeterRegistry {
               .apiKey(config.apiKey())
               .httpPoster(new MicrometerHttpPoster(httpSender))
               .secondaryUserAgent("NewRelic-Micrometer-Exporter", implementationVersion);
+      if (config.enableAuditMode()) {
+        metricBatchSenderBuilder.enableAuditLogging();
+      }
       if (config.uri() != null) {
         try {
           metricBatchSenderBuilder.uriOverride(URI.create(config.uri()));

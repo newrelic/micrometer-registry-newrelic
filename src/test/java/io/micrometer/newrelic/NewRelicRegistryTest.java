@@ -1,8 +1,6 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic;
@@ -65,7 +63,7 @@ class NewRelicRegistryTest {
   @Mock private CommonCounterTransformer<Counter> counterTransformer;
   @Mock private LongTaskTimerTransformer longTaskTimerTransformer;
   @Mock private CommonCounterTransformer<FunctionCounter> functionCounterTransformer;
-  @Mock private TelemetryClient newRelicSender;
+  @Mock private TelemetryClient telemetryClient;
   @Mock private DistributionSummaryTransformer distributionSummaryTransformer;
   @Mock private TimeTracker timeTracker;
   @Mock private BareMeterTransformer bareMeterTransformer;
@@ -92,7 +90,7 @@ class NewRelicRegistryTest {
             config,
             clock,
             commonAttributes,
-            newRelicSender,
+            telemetryClient,
             timeGaugeTransformer,
             gaugeTransformer,
             timerTransformer,
@@ -126,7 +124,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -144,7 +142,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -165,7 +163,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -183,7 +181,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -211,7 +209,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -229,7 +227,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -249,7 +247,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -268,7 +266,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -287,7 +285,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -304,6 +302,6 @@ class NewRelicRegistryTest {
     newRelicRegistry.gauge("7_eleven", 33);
     newRelicRegistry.gauge("8_oh_eight", 33);
     newRelicRegistry.publish();
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
   }
 }
