@@ -33,7 +33,7 @@ public class TimerTransformer {
     // it into a null.
     Summary summary =
         new Summary(
-            id.getName(),
+            id.getName() + ".summary",
             (int) timer.count(),
             timer.totalTime(timer.baseTimeUnit()),
             Double.NaN,

@@ -41,7 +41,7 @@ class TimerTransformerTest {
 
     Summary summary =
         new Summary(
-            "timerName", 1000, 20000, Double.NaN, 5000, now - 2000, now, standardAttributes);
+            "timerName.summary", 1000, 20000, Double.NaN, 5000, now - 2000, now, standardAttributes);
 
     when(timeTracker.getCurrentTime()).thenReturn(now);
     when(timeTracker.getPreviousTime()).thenReturn(now - 2000);
@@ -72,7 +72,7 @@ class TimerTransformerTest {
             .put("baseUnit", "units");
 
     Summary summary =
-        new Summary("timerName", 0, 0, Double.NaN, 0, now - 2000, now, standardAttributes);
+        new Summary("timerName.summary", 0, 0, Double.NaN, 0, now - 2000, now, standardAttributes);
 
     when(timeTracker.getCurrentTime()).thenReturn(now);
     when(timeTracker.getPreviousTime()).thenReturn(now - 2000);

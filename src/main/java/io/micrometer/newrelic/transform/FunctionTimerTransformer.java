@@ -31,7 +31,7 @@ public class FunctionTimerTransformer {
 
     Summary summary =
         new Summary(
-            id.getName(),
+            id.getName() + ".summary",
             (int) functionTimer.count(),
             functionTimer.totalTime(functionTimer.baseTimeUnit()),
             Double.NaN,

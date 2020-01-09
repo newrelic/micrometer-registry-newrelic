@@ -56,7 +56,7 @@ class FunctionTimerTransformerTest {
 
     Summary summary =
         new Summary(
-            "functionTimerName",
+            "functionTimerName.summary",
             55,
             10000,
             Double.NaN,
