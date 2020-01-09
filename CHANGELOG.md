@@ -5,7 +5,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.3.1] - 2020-01-09
-- Allow appending string to `User-Agent` as suffix
+- Allow appending string to HTTP `User-Agent` header as suffix
 - Add ability to enable "audit logging" for more verbose troubleshooting
 - `DistributionSummary` now uses a `Summary` instead of a `Count` and 2 `Gauge`s.
 - `FunctionTimer` now uses a `Summary` instead of a `Count` and 2 `Gauge`s. 
