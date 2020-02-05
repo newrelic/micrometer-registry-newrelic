@@ -31,19 +31,15 @@ googleJavaFormat {
 }
 
 dependencies {
-    api("io.micrometer:micrometer-core:1.2.2")
+    api("io.micrometer:micrometer-core:1.3.3")
     api("com.newrelic.telemetry:telemetry:0.3.4")
-    //note: these are transitive dependencies from micrometer, but needed to be upgraded due to a security vulnerability
-    implementation("com.fasterxml.jackson.core:jackson-core:2.9.9")
-    implementation("com.fasterxml.jackson.core:jackson-annotations:2.9.9")
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.9.10.1")
 
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.4.2")
-    testRuntimeOnly("org.slf4j:slf4j-simple:1.7.26")
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.4.2")
-    testImplementation("org.mockito:mockito-core:3.0.0")
-    testImplementation("org.mockito:mockito-junit-jupiter:3.0.0")
-    testImplementation("org.mock-server:mockserver-netty:5.7.1")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
+    testRuntimeOnly("org.slf4j:slf4j-simple:1.7.30")
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
+    testImplementation("org.mockito:mockito-core:3.2.4")
+    testImplementation("org.mockito:mockito-junit-jupiter:3.2.4")
+    testImplementation("org.mock-server:mockserver-netty:5.9.0")
 }
 
 val jar: Jar by tasks
