@@ -45,3 +45,12 @@ The project uses gradle 5 for building, and the gradle wrapper is provided.
 To compile, run the tests and build the jar:
 
 `$ ./gradlew build`
+
+### Find and use your data
+
+For tips on how to find and query your data, see [Find metric data](https://docs.newrelic.com/docs/data-ingest-apis/get-data-new-relic/metric-api/introduction-metric-api#find-data).
+
+For general querying information, see:
+- [Query New Relic data](https://docs.newrelic.com/docs/using-new-relic/data/understand-data/query-new-relic-data)
+- [Intro to NRQL](https://docs.newrelic.com/docs/query-data/nrql-new-relic-query-language/getting-started/nrql-syntax-clauses-functions)
+
