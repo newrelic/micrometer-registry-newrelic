@@ -1,12 +1,11 @@
-### New Relic Micrometer Registry
+### New Relic Micrometer registry
 A [Micrometer metrics](https://micrometer.io/) registry for sending dimensional metrics to New Relic using the New Relic Java Telemetry SDK.
 
 This registry should be able to be used both within a Spring Boot application, or any application that uses
 micrometer for recording metrics.
 
 Note: the micrometer project currently includes a NewRelicMeterRegistry that writes metrics to NewRelic as 
-Custom Events. This implementation is intended to supersede that, as dimensional metrics are a better fit
-for micrometer metrics than Custom Events.
+custom events. This implementation is intended to supersede that, as [dimensional metrics](https://docs.newrelic.com/docs/using-new-relic/data/understand-data/new-relic-data-types#dimensional-metrics) are a better fit for micrometer metrics than custom [events](https://docs.newrelic.com/docs/using-new-relic/data/understand-data/new-relic-data-types#events-new-relic). 
 
 ### How to use:
 
@@ -52,5 +51,5 @@ For tips on how to find and query your data, see [Find metric data](https://docs
 
 For general querying information, see:
 - [Query New Relic data](https://docs.newrelic.com/docs/using-new-relic/data/understand-data/query-new-relic-data)
-- [Intro to NRQL](https://docs.newrelic.com/docs/query-data/nrql-new-relic-query-language/getting-started/nrql-syntax-clauses-functions)
+- [Intro to NRQL](https://docs.newrelic.com/docs/query-data/nrql-new-relic-query-language/getting-started/introduction-nrql)
 
