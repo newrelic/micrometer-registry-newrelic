@@ -64,12 +64,14 @@ Results of the job can be viewed here: https://dev.azure.com/NRAzurePipelines/Ja
 After the staging release job has run successfully it will publish the new artifact to a staging repository on Sonatype at: https://oss.sonatype.org/#stagingRepositories.
 
 #### Manually Release Staging Repo
+
 1. Find the staging repo on Sonatype, which should be named similar to `comnewrelic-nnnn`, and validate that the contents and version look correct.
 2. If the contents look correct, select the staging repo and choose `close`, leaving a comment such as `releasing 0.5.0`.
 3. When the staging repo is finished closing, select the staging repo and choose `release`, keeping the `Automatically Drop` checkbox checked, and leave a comment such as `releasing 0.5.0`.
 4. Verify that the artifact was published on Maven Central at: https://repo1.maven.org/maven2/com/newrelic/telemetry/micrometer-registry-new-relic/
 
 #### Post Release
+
 Submit and merge a PR with the following:
 * Update the [build.gradle.kts](build.gradle.kts) file with to a snapshot version of a potential future release (e.g. `version  := "0.5.1-SNAPSHOT"`).
 * Update the [CHANGELOG](CHANGELOG.md) with details of the new release:
