@@ -32,8 +32,9 @@ It will need to be built via a `io.micrometer.NewRelicRegistryConfig` implementa
 
 In order to send metrics to New Relic, you will also need an Insights Insert API Key. Please see [New Relic Api Keys](https://docs.newrelic.com/docs/apis/get-started/intro-apis/types-new-relic-api-keys#) for more information.
 
-
 And, that's it! For details on what your metrics will look like once they are reported, please see the [Micrometer exporter spec](https://github.com/newrelic/exporter-specs). 
+
+### [![Javadocs][javadoc-image]][javadoc-url]
 
 ### Building
 CI builds are run on Azure Pipelines: 
@@ -80,3 +81,6 @@ Submit and merge a PR with the following:
   - Miscellaneous bug fixes and tweaks
   ```
 * Update the [Usage](#usage) example in the [README](README.md) with the newly released version (e.g. `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.5.0'`).
+
+[javadoc-image]: https://www.javadoc.io/badge/com.newrelic.telemetry/micrometer-registry-new-relic.svg
+[javadoc-url]: https://www.javadoc.io/doc/com.newrelic.telemetry/micrometer-registry-new-relic
