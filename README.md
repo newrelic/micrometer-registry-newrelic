@@ -34,7 +34,7 @@ In order to send metrics to New Relic, you will also need an Insights Insert API
 
 And, that's it! For details on what your metrics will look like once they are reported, please see the [Micrometer exporter spec](https://github.com/newrelic/exporter-specs). 
 
-### [![Javadocs][javadoc-image]][javadoc-url]
+### Javadoc for this project can be found here: [![Javadocs][javadoc-image]][javadoc-url]
 
 ### Building
 CI builds are run on Azure Pipelines: 
