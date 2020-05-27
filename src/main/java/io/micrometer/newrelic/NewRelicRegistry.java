@@ -154,6 +154,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
   }
 
   @Override
+  public void close() {
+    super.close();
+    this.telemetryClient.shutdown();
+  }
+
+  @Override
   protected void publish() {
     List<List<Meter>> partitionedData = MeterPartition.partition(this, config.batchSize());
     for (List<Meter> batch : partitionedData) {
