@@ -304,4 +304,11 @@ class NewRelicRegistryTest {
     newRelicRegistry.publish();
     verify(telemetryClient).sendBatch(expectedBatch);
   }
+
+  @Test
+  @DisplayName("closing telemetryClient's executor")
+  void testClose() {
+    newRelicRegistry.close();
+    verify(telemetryClient).shutdown();
+  }
 }
