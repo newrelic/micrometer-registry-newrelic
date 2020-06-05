@@ -156,6 +156,8 @@ public class NewRelicRegistry extends StepMeterRegistry {
   @Override
   public void close() {
     super.close();
+    // NOTE: telemetryClient.shutdown is called after calling "close"
+    // so that we can flush the last metricBatch
     this.telemetryClient.shutdown();
   }
 
