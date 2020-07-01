@@ -6,11 +6,11 @@
 package io.micrometer.newrelic;
 
 import com.newrelic.telemetry.Attributes;
+import com.newrelic.telemetry.SenderConfiguration;
 import com.newrelic.telemetry.TelemetryClient;
 import com.newrelic.telemetry.metrics.Metric;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
-import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
@@ -92,7 +92,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
         config,
         clock,
         commonAttributes,
-        new TelemetryClient(metricBatchSender, null),
+        new TelemetryClient(metricBatchSender, null, null, null),
         new TimeGaugeTransformer(new GaugeTransformer(clock, attributesMaker)),
         new GaugeTransformer(clock, attributesMaker),
         new TimerTransformer(timeTracker),
@@ -232,7 +232,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
 
   public static class NewRelicRegistryBuilder {
 
-    private NewRelicRegistryConfig config;
+    private final NewRelicRegistryConfig config;
     private HttpSender httpSender = new HttpUrlConnectionSender();
     private Attributes commonAttributes = new Attributes();
 
@@ -263,22 +263,30 @@ public class NewRelicRegistry extends StepMeterRegistry {
     }
 
     private MetricBatchSender createMetricBatchSender() {
-      MetricBatchSenderBuilder metricBatchSenderBuilder =
-          MetricBatchSender.builder()
+      SenderConfiguration.SenderConfigurationBuilder builder =
+          MetricBatchSender.configurationBuilder()
               .apiKey(config.apiKey())
               .httpPoster(new MicrometerHttpPoster(httpSender))
-              .secondaryUserAgent("NewRelic-Micrometer-Exporter", implementationVersion);
-      if (config.enableAuditMode()) {
-        metricBatchSenderBuilder.enableAuditLogging();
+              .secondaryUserAgent("NewRelic-Micrometer-Exporter/" + implementationVersion)
+              .auditLoggingEnabled(config.enableAuditMode());
+      builder = configureEndpoint(builder);
+      return MetricBatchSender.create(builder.build());
+    }
+
+    private SenderConfiguration.SenderConfigurationBuilder configureEndpoint(
+        SenderConfiguration.SenderConfigurationBuilder builder) {
+      if (config.uri() == null) {
+        return builder;
       }
-      if (config.uri() != null) {
-        try {
-          metricBatchSenderBuilder.uriOverride(URI.create(config.uri()));
-        } catch (MalformedURLException e) {
-          throw new RuntimeException("Invalid URI for the metric API : " + config.uri(), e);
+      try {
+        URI uri = URI.create(config.uri());
+        if (uri.getPath() != null && uri.getPath().length() > 0) {
+          return builder.endpointWithPath(uri.toURL());
         }
+        return builder.endpoint(uri.getScheme(), uri.getHost(), uri.getPort());
+      } catch (MalformedURLException e) {
+        throw new RuntimeException("Invalid URI for the metric API : " + config.uri(), e);
       }
-      return metricBatchSenderBuilder.build();
     }
   }
 }
