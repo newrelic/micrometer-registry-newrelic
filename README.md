@@ -38,7 +38,7 @@ And, that's it! For details on what your metrics will look like once they are re
 
 ### Building
 CI builds are run on Azure Pipelines: 
-[![Build Status](https://dev.azure.com/NRAzurePipelines/Java%20CI/_apis/build/status/PR%20build%20for%20Micrometer%20Registry?branchName=master)](https://dev.azure.com/NRAzurePipelines/Java%20CI/_build/latest?definitionId=2&branchName=master)
+[![Build Status](https://dev.azure.com/NRAzurePipelines/Java%20CI/_apis/build/status/PR%20build%20for%20Micrometer%20Registry?branchName=main)](https://dev.azure.com/NRAzurePipelines/Java%20CI/_build/latest?definitionId=2&branchName=main)
 
 The project uses gradle 5 for building, and the gradle wrapper is provided.
 
