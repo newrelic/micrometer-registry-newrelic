@@ -55,7 +55,6 @@ class BareMeterTransformerTest {
 
     Attributes expectedAttributes =
         new Attributes()
-            .put("source.type", "meter")
             .put("baseUnit", "units")
             .put("description", "meterDescription")
             .put("foo", "bar");

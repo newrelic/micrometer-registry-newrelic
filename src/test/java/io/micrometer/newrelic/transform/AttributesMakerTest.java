@@ -26,7 +26,6 @@ class AttributesMakerTest {
     Meter meter = new NoopGauge(id);
     Attributes expected =
         new Attributes()
-            .put("source.type", "gauge")
             .put("baseUnit", "mm")
             .put("description", "a thinger")
             .put("foo", "bar")
@@ -43,8 +42,7 @@ class AttributesMakerTest {
     Tags tags = Tags.of("foo", "bar", "bar", "biz");
     Id id = new Id("jimbo", tags, null, null, Type.GAUGE);
     Meter meter = new NoopGauge(id);
-    Attributes expected =
-        new Attributes().put("source.type", "gauge").put("foo", "bar").put("bar", "biz");
+    Attributes expected = new Attributes().put("foo", "bar").put("bar", "biz");
 
     AttributesMaker testClass = new AttributesMaker();
     Attributes result = testClass.make(meter.getId(), "gauge");

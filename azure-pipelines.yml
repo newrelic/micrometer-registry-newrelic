@@ -1,4 +1,4 @@
-# PR + Master build
+# PR + Main build
 name: PR Build for Micrometer Registry
 pr:
   branches:
@@ -6,7 +6,7 @@ pr:
       - '*'  # must quote since "*" is a YAML reserved character; we want a string
 
 trigger:
-  - master
+  - main
 
 pool:
   vmImage: 'ubuntu-latest'
@@ -21,7 +21,7 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
+      publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'verifyGoogleJavaFormat'
   - task: Gradle@2
@@ -33,6 +33,6 @@ steps:
       javaHomeOption: 'JDKVersion'
       jdkVersionOption: '1.8'
       jdkArchitectureOption: 'x64'
-      publishJUnitResults: true
+      publishJUnitResults: false
       testResultsFiles: '**/TEST-*.xml'
       tasks: 'check'

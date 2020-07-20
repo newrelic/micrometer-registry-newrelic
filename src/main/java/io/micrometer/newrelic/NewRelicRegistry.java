@@ -1,18 +1,16 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic;
 
 import com.newrelic.telemetry.Attributes;
+import com.newrelic.telemetry.SenderConfiguration;
 import com.newrelic.telemetry.TelemetryClient;
 import com.newrelic.telemetry.metrics.Metric;
 import com.newrelic.telemetry.metrics.MetricBatch;
 import com.newrelic.telemetry.metrics.MetricBatchSender;
-import com.newrelic.telemetry.metrics.MetricBatchSenderBuilder;
 import io.micrometer.NewRelicRegistryConfig;
 import io.micrometer.core.instrument.Clock;
 import io.micrometer.core.instrument.Counter;
@@ -61,7 +59,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
   private static final String implementationVersion;
 
   private final NewRelicRegistryConfig config;
-  private final TelemetryClient newRelicSender;
+  private final TelemetryClient telemetryClient;
   private final Attributes commonAttributes;
   private final TimeGaugeTransformer timeGaugeTransformer;
   private final GaugeTransformer gaugeTransformer;
@@ -79,7 +77,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
   static {
     Package thisPackage = NewRelicRegistry.class.getPackage();
     implementationVersion =
-        Optional.ofNullable(thisPackage.getImplementationVersion()).orElse("Unknown Version");
+        Optional.ofNullable(thisPackage.getImplementationVersion()).orElse("UnknownVersion");
   }
 
   // visible for testing
@@ -94,7 +92,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
         config,
         clock,
         commonAttributes,
-        new TelemetryClient(metricBatchSender, null),
+        new TelemetryClient(metricBatchSender, null, null, null),
         new TimeGaugeTransformer(new GaugeTransformer(clock, attributesMaker)),
         new GaugeTransformer(clock, attributesMaker),
         new TimerTransformer(timeTracker),
@@ -112,7 +110,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       NewRelicRegistryConfig config,
       Clock clock,
       Attributes commonAttributes,
-      TelemetryClient newRelicSender,
+      TelemetryClient telemetryClient,
       TimeGaugeTransformer timeGaugeTransformer,
       GaugeTransformer gaugeTransformer,
       TimerTransformer timerTransformer,
@@ -132,7 +130,10 @@ public class NewRelicRegistry extends StepMeterRegistry {
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic")
             .put("collector.version", implementationVersion);
-    this.newRelicSender = newRelicSender;
+    if (config.serviceName() != null) {
+      this.commonAttributes.put("service.name", config.serviceName());
+    }
+    this.telemetryClient = telemetryClient;
     this.timeGaugeTransformer = timeGaugeTransformer;
     this.gaugeTransformer = gaugeTransformer;
     this.timerTransformer = timerTransformer;
@@ -150,6 +151,14 @@ public class NewRelicRegistry extends StepMeterRegistry {
   public void start(ThreadFactory threadFactory) {
     LOG.info("New Relic Registry: Version " + implementationVersion + " is starting");
     super.start(threadFactory);
+  }
+
+  @Override
+  public void close() {
+    super.close();
+    // NOTE: telemetryClient.shutdown is called after calling "close"
+    // so that we can flush the last metricBatch
+    this.telemetryClient.shutdown();
   }
 
   @Override
@@ -179,7 +188,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
               metrics.addAll(bareMeterTransformer.transform(meter));
             }
           });
-      newRelicSender.sendBatch(new MetricBatch(metrics, commonAttributes));
+      telemetryClient.sendBatch(new MetricBatch(metrics, commonAttributes));
     }
     timeTracker.tick();
   }
@@ -223,7 +232,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
 
   public static class NewRelicRegistryBuilder {
 
-    private NewRelicRegistryConfig config;
+    private final NewRelicRegistryConfig config;
     private HttpSender httpSender = new HttpUrlConnectionSender();
     private Attributes commonAttributes = new Attributes();
 
@@ -254,18 +263,30 @@ public class NewRelicRegistry extends StepMeterRegistry {
     }
 
     private MetricBatchSender createMetricBatchSender() {
-      MetricBatchSenderBuilder metricBatchSenderBuilder =
-          MetricBatchSender.builder()
+      SenderConfiguration.SenderConfigurationBuilder builder =
+          MetricBatchSender.configurationBuilder()
               .apiKey(config.apiKey())
-              .httpPoster(new MicrometerHttpPoster(httpSender));
-      if (config.uri() != null) {
-        try {
-          metricBatchSenderBuilder.uriOverride(URI.create(config.uri()));
-        } catch (MalformedURLException e) {
-          throw new RuntimeException("Invalid URI for the metric API : " + config.uri(), e);
-        }
+              .httpPoster(new MicrometerHttpPoster(httpSender))
+              .secondaryUserAgent("NewRelic-Micrometer-Exporter/" + implementationVersion)
+              .auditLoggingEnabled(config.enableAuditMode());
+      builder = configureEndpoint(builder);
+      return MetricBatchSender.create(builder.build());
+    }
+
+    private SenderConfiguration.SenderConfigurationBuilder configureEndpoint(
+        SenderConfiguration.SenderConfigurationBuilder builder) {
+      if (config.uri() == null) {
+        return builder;
       }
-      return metricBatchSenderBuilder.build();
+      try {
+        URI uri = URI.create(config.uri());
+        if (uri.getPath() != null && uri.getPath().length() > 0) {
+          return builder.endpointWithPath(uri.toURL());
+        }
+        return builder.endpoint(uri.getScheme(), uri.getHost(), uri.getPort());
+      } catch (MalformedURLException e) {
+        throw new RuntimeException("Invalid URI for the metric API : " + config.uri(), e);
+      }
     }
   }
 }

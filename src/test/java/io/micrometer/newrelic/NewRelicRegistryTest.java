@@ -1,8 +1,6 @@
 /*
- * ---------------------------------------------------------------------------------------------
- *  Copyright (c) 2019 New Relic Corporation. All rights reserved.
- *  Licensed under the Apache 2.0 License. See LICENSE in the project root directory for license information.
- * --------------------------------------------------------------------------------------------
+ * Copyright 2020 New Relic Corporation. All rights reserved.
+ * SPDX-License-Identifier: Apache-2.0
  */
 
 package io.micrometer.newrelic;
@@ -65,7 +63,7 @@ class NewRelicRegistryTest {
   @Mock private CommonCounterTransformer<Counter> counterTransformer;
   @Mock private LongTaskTimerTransformer longTaskTimerTransformer;
   @Mock private CommonCounterTransformer<FunctionCounter> functionCounterTransformer;
-  @Mock private TelemetryClient newRelicSender;
+  @Mock private TelemetryClient telemetryClient;
   @Mock private DistributionSummaryTransformer distributionSummaryTransformer;
   @Mock private TimeTracker timeTracker;
   @Mock private BareMeterTransformer bareMeterTransformer;
@@ -82,16 +80,17 @@ class NewRelicRegistryTest {
         new Attributes()
             .put("instrumentation.provider", "micrometer")
             .put("collector.name", "micrometer-registry-newrelic")
-            .put("collector.version", "Unknown Version");
-
+            .put("collector.version", "UnknownVersion")
+            .put("service.name", "my awesome service");
     when(config.batchSize()).thenReturn(10);
     when(config.step()).thenReturn(Duration.ofDays(1));
+    when(config.serviceName()).thenReturn("my awesome service");
     newRelicRegistry =
         new NewRelicRegistry(
             config,
             clock,
             commonAttributes,
-            newRelicSender,
+            telemetryClient,
             timeGaugeTransformer,
             gaugeTransformer,
             timerTransformer,
@@ -125,7 +124,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -143,7 +142,28 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
+    verify(timeTracker).tick();
+  }
+
+  @Test
+  @DisplayName("service name can be set at the top level")
+  void testServiceName() {
+    Gauge expectedGauge =
+        new Gauge("gauge", 5d, System.currentTimeMillis(), new Attributes().put("foo", "bar"));
+    MetricBatch expectedBatch =
+        new MetricBatch(
+            singletonList(expectedGauge),
+            expectedAttributes.put("service.name", "my awesome service"));
+
+    when(gaugeTransformer.transform(isA(io.micrometer.core.instrument.Gauge.class)))
+        .thenReturn(expectedGauge);
+
+    newRelicRegistry.gauge("gauge", singletonList(Tag.of("foo", "bar")), 5);
+
+    newRelicRegistry.publish();
+
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -161,7 +181,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -189,7 +209,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -207,7 +227,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -227,7 +247,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -246,7 +266,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -265,7 +285,7 @@ class NewRelicRegistryTest {
 
     newRelicRegistry.publish();
 
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
     verify(timeTracker).tick();
   }
 
@@ -282,6 +302,13 @@ class NewRelicRegistryTest {
     newRelicRegistry.gauge("7_eleven", 33);
     newRelicRegistry.gauge("8_oh_eight", 33);
     newRelicRegistry.publish();
-    verify(newRelicSender).sendBatch(expectedBatch);
+    verify(telemetryClient).sendBatch(expectedBatch);
+  }
+
+  @Test
+  @DisplayName("closing telemetryClient's executor")
+  void testClose() {
+    newRelicRegistry.close();
+    verify(telemetryClient).shutdown();
   }
 }

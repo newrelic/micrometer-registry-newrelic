@@ -57,4 +57,4 @@ The New Relic Micrometer Registry includes the following tests which must pass:
 Ideally, we would love it if you also added appropriate tests if you're implementing a feature!
 
 ## License
-By contributing to New Relic Micrometer Registry, you agree that your contributions will be licensed under the [License file](LICENSE) in the root directory of this source tree.
+By contributing to New Relic Micrometer Registry, you agree that your contributions will be licensed under the [License file](LICENSE.md) in the root directory of this source tree.k
