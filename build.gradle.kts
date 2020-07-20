@@ -119,3 +119,8 @@ configure<PublishingExtension> {
         }
     }
 }
+
+// This makes it difficult to use modern Java and produce usable output.
+tasks.withType<GenerateModuleMetadata> {
+    enabled = false
+}
