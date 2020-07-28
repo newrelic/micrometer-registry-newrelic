@@ -245,7 +245,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
       return this;
     }
 
-    /** Supply a set of attributes that should be applied to all metrics. */
+    /**
+     * Supply a set of attributes that should be applied to all metrics.
+     *
+     * @param commonAttributes The attributes that relate to all metrics
+     * @return {@literal this}
+     */
     public NewRelicRegistryBuilder commonAttributes(Attributes commonAttributes) {
       this.commonAttributes = commonAttributes;
       return this;

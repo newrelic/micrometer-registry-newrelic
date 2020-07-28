@@ -16,7 +16,7 @@ public class LastSeenTracker {
 
   private final Map<String, LastSeen> lastSeen = new WeakHashMap<>();
 
-  /** Returns the last seen/known value and time for a given metric (by name) */
+  /* Returns the last seen/known value and time for a given metric (by name) */
   public LastSeen getAndUpdate(String name, long now, double value, double duration) {
     LastSeen newLastSeen = new LastSeen(now, value, duration);
     LastSeen lastSeenLastSeen = lastSeen.get(name);
