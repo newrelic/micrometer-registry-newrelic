@@ -15,7 +15,7 @@ custom events. This implementation is intended to supersede that, as [dimensiona
 
     Note: you might need to also include a dependency on micrometer-core itself, for example:
 
-    `implementation 'io.micrometer:micrometer-core:1.2.2'`
+    `implementation 'io.micrometer:micrometer-core:1.5.4'`
     
 2) via maven:
 
