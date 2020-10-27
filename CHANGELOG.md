@@ -4,7 +4,10 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.6.0] - TBD (unreleased)
+## [0.7.0] - TBD
+- TBD
+
+## [0.6.0] - 2020-10-27
 - **BREAKING CHANGE**: [Repackage](https://github.com/newrelic/micrometer-registry-newrelic/pull/104) registry class to `com.newrelic.telemetry.micrometer.NewRelicRegistry`.
   Users will need to change code or configuration that references the old package.
 - Shut down the telemetry sdk in [`close()`](https://github.com/newrelic/micrometer-registry-newrelic/pull/82/)
