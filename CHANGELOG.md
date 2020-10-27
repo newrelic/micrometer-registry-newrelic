@@ -4,11 +4,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [0.5.1] - TBD (unreleased)
+## [0.6.0] - TBD (unreleased)
+- **BREAKING CHANGE**: [Repackage](https://github.com/newrelic/micrometer-registry-newrelic/pull/104) registry class to `com.newrelic.telemetry.micrometer.NewRelicRegistry`.
+  Users will need to change code or configuration that references the old package.
+- Shut down the telemetry sdk in [`close()`](https://github.com/newrelic/micrometer-registry-newrelic/pull/82/)
+  in order to flush the last batch of telemetry. 
 - Depend directly on slf4j
-- Update to New Relic Telemetry SDK 0.6.1
-- Change construction of NewRelicRegistry to avoid deprecations in the SDK.
-- Endpoint URI overrides will now respect path information (it was previously ignored). 
+- Change [construction of NewRelicRegistry](https://github.com/newrelic/micrometer-registry-newrelic/pull/85) to avoid deprecations in the SDK.
+- Endpoint URI overrides will now respect path information (it was previously ignored).
+- Upgrade to micrometer-core 1.5.4
+- Update to New Relic Telemetry SDK 0.9.0
 
 ## [0.5.0] - 2020-04-01
 - Changed: Update micrometer-core version to 1.3.3
