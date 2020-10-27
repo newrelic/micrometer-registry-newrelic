@@ -30,7 +30,7 @@ googleJavaFormat {
 
 dependencies {
     api("io.micrometer:micrometer-core:1.5.4")
-    api("com.newrelic.telemetry:telemetry:0.7.0")
+    api("com.newrelic.telemetry:telemetry:0.9.0")
     implementation("org.slf4j:slf4j-api:1.7.30")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
@@ -38,7 +38,7 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testImplementation("org.mockito:mockito-core:3.2.4")
     testImplementation("org.mockito:mockito-junit-jupiter:3.2.4")
-    testImplementation("org.mock-server:mockserver-netty:5.10.0")
+    testImplementation("org.mock-server:mockserver-netty:5.11.1")
 }
 
 java {
