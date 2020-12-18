@@ -3,7 +3,7 @@ Thanks for your interest in contributing to the New Relic Micrometer Registry! W
 
 ## How to Contribute
 * Read this CONTRIBUTING file
-* Read our [Code of Conduct](CODE_OF_CONDUCT.md)
+* Read our [Code of Conduct](https://github.com/newrelic/.github/blob/main/CODE_OF_CONDUCT.md)
 * Submit a [pull request](#pull-request-guidelines) or [issue](#filing-issues--bug-reports). For pull requests, please also:
     * Ensure the [test suite passes](#testing-guidelines).
     * Sign the [Contributor Licensing Agreement](#contributor-license-agreement-cla), if you haven't already done so. (You will be prompted if we don't have a signed CLA already recorded.)
