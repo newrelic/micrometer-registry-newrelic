@@ -29,8 +29,8 @@ googleJavaFormat {
 }
 
 dependencies {
-    api("io.micrometer:micrometer-core:1.5.4")
-    api("com.newrelic.telemetry:telemetry:0.9.0")
+    api("io.micrometer:micrometer-core:1.6.3")
+    api("com.newrelic.telemetry:telemetry:0.10.0")
     implementation("org.slf4j:slf4j-api:1.7.30")
 
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
