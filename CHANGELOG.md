@@ -5,7 +5,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.7.0] - TBD
-- TBD
+- Update io.micrometer:micrometer-core to 1.6.3
+- Update com.newrelic.telemetry:telemetry to 0.10.0
 
 ## [0.6.0] - 2020-10-27
 - **BREAKING CHANGE**: [Repackage](https://github.com/newrelic/micrometer-registry-newrelic/pull/104) registry class to `com.newrelic.telemetry.micrometer.NewRelicRegistry`.

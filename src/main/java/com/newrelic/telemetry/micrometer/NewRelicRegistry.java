@@ -284,10 +284,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       }
       try {
         URI uri = URI.create(config.uri());
-        if (uri.getPath() != null && uri.getPath().length() > 0) {
-          return builder.endpointWithPath(uri.toURL());
-        }
-        return builder.endpoint(uri.getScheme(), uri.getHost(), uri.getPort());
+        return builder.endpoint(uri.toURL());
       } catch (MalformedURLException e) {
         throw new RuntimeException("Invalid URI for the metric API : " + config.uri(), e);
       }
