@@ -38,7 +38,13 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
     testImplementation("org.mockito:mockito-core:3.2.4")
     testImplementation("org.mockito:mockito-junit-jupiter:3.2.4")
-    testImplementation("org.mock-server:mockserver-netty:5.11.1")
+    testImplementation("org.mock-server:mockserver-netty:5.11.2")
+    constraints {
+        testImplementation("org.apache.httpcomponents:httpclient:4.5.13") {
+            because("previous versions trigger Snyk security warnings")
+        }
+    }
+
 }
 
 java {
