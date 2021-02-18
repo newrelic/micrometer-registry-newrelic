@@ -13,11 +13,11 @@ custom events. This implementation is intended to supersede that, as [dimensiona
 
 1) via gradle: 
   
-    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.5.0'`
+    `implementation 'com.newrelic.telemetry:micrometer-registry-new-relic:0.7.0'`
 
     Note: you might need to also include a dependency on micrometer-core itself, for example:
 
-    `implementation 'io.micrometer:micrometer-core:1.5.4'`
+    `implementation 'io.micrometer:micrometer-core:1.6.4'`
     
 2) via maven:
 
@@ -25,7 +25,7 @@ custom events. This implementation is intended to supersede that, as [dimensiona
     <dependency>
         <groupId>com.newrelic.telemetry</groupId>
         <artifactId>micrometer-registry-new-relic</artifactId>
-        <version>0.5.0</version>
+        <version>0.7.0</version>
     </dependency>
 ```
 
