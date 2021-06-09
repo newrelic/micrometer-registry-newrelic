@@ -29,7 +29,7 @@ googleJavaFormat {
 }
 
 dependencies {
-    api("io.micrometer:micrometer-core:1.6.4")
+    api("io.micrometer:micrometer-core:1.7.0")
     api("com.newrelic.telemetry:telemetry-core:0.12.0")
     implementation("org.slf4j:slf4j-api:1.7.30")
 
