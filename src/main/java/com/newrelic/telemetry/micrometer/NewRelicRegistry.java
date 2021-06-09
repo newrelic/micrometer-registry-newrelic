@@ -270,6 +270,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
       SenderConfiguration.SenderConfigurationBuilder builder =
           MetricBatchSender.configurationBuilder()
               .apiKey(config.apiKey())
+              .useLicenseKey(config.useLicenseKey())
               .httpPoster(new MicrometerHttpPoster(httpSender))
               .secondaryUserAgent("NewRelic-Micrometer-Exporter/" + implementationVersion)
               .auditLoggingEnabled(config.enableAuditMode());
