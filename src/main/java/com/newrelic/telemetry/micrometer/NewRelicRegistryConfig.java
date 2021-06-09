@@ -52,4 +52,15 @@ public interface NewRelicRegistryConfig extends StepRegistryConfig {
   default boolean enableAuditMode() {
     return false;
   }
+
+  /**
+   * Configure the underlying New Relic Telemetry SDK to consider the apiKey to be a license key,
+   * not an insights api key.
+   *
+   * @see com.newrelic.telemetry.transport.BatchDataSender
+   * @return true if configured apiKey is a license key, not an insights api key.
+   */
+  default boolean useLicenseKey() {
+    return false;
+  }
 }
