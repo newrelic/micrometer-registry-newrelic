@@ -5,6 +5,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [0.8.0] - TBD
+- add `useLicenseKey` option to NewRelicRegistryConfig. The registry will now accept a New Relic license key to report data. Thank you [Greg Eales](https://github.com/0x006EA1E5)!
+- Update io.micrometer:micrometer-core to 1.7.0
+- Update com.newrelic.telemetry:telemetry to com.newrelic.telemetry:telemetry-core 0.12.0
 
 ## [0.7.0] - 2021-02-18
 - Update io.micrometer:micrometer-core to 1.6.4

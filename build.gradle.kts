@@ -29,10 +29,9 @@ googleJavaFormat {
 }
 
 dependencies {
-    api("io.micrometer:micrometer-core:1.6.4")
+    api("io.micrometer:micrometer-core:1.7.0")
     api("com.newrelic.telemetry:telemetry-core:0.12.0")
     implementation("org.slf4j:slf4j-api:1.7.30")
-
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.30")
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.6.0")
@@ -42,6 +41,15 @@ dependencies {
     constraints {
         testImplementation("org.apache.httpcomponents:httpclient:4.5.13") {
             because("previous versions trigger Snyk security warnings")
+        }
+        testImplementation("io.netty:netty-handler:4.1.59.Final") {
+            because ("snyk violations")
+        }
+        testImplementation("io.netty:netty-codec-http:4.1.59.Final") {
+            because ("snyk violations")
+        }
+        testImplementation("org.apache.velocity:velocity-engine-core:2.3") {
+            because ("snyk violations")
         }
     }
 
