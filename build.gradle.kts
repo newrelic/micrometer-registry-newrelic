@@ -51,6 +51,9 @@ dependencies {
         testImplementation("org.apache.velocity:velocity-engine-core:2.3") {
             because ("snyk violations")
         }
+        testImplementation("net.minidev:json-smart:2.4.1") {
+            because ("snyk violations")
+        }
     }
 
 }
