@@ -79,8 +79,7 @@ public class NewRelicRegistry extends StepMeterRegistry {
         Optional.ofNullable(thisPackage.getImplementationVersion()).orElse("UnknownVersion");
   }
 
-  // visible for testing
-  private NewRelicRegistry(
+  protected NewRelicRegistry(
       NewRelicRegistryConfig config,
       Clock clock,
       Attributes commonAttributes,
@@ -162,7 +161,10 @@ public class NewRelicRegistry extends StepMeterRegistry {
 
   @Override
   protected void publish() {
-    List<List<Meter>> partitionedData = MeterPartition.partition(this, config.batchSize());
+    doPublish(MeterPartition.partition(this, config.batchSize()));
+  }
+
+  protected void doPublish(List<List<Meter>> partitionedData) {
     for (List<Meter> batch : partitionedData) {
       List<Metric> metrics = new ArrayList<>();
       batch.forEach(
@@ -235,6 +237,58 @@ public class NewRelicRegistry extends StepMeterRegistry {
     private HttpSender httpSender = new HttpUrlConnectionSender();
     private Attributes commonAttributes = new Attributes();
 
+    /**
+     * In concert with {@link NewRelicRegistryBuilder#build(RegistryFactory)}, allows for
+     * construction of registries that extend {@link NewRelicRegistry} without having to expose
+     * additional internal details (like construction of a {@link MetricBatchSender}).
+     *
+     * <p>For example, to create a registry that extends {@code NewRelicRegistry}, but requires some
+     * additional custom configuration, you could do:
+     *
+     * <pre>
+     * public static class MyRegistryExtension implements NewRelicRegistryBuilder.RegistryFactory {
+     *   private final int someCustomField;
+     *
+     *   public MyRegistryExtension(int someCustomField) {
+     *     this.someCustomField = someCustomField;
+     *   }
+     *
+     *   &#64;Override
+     *   public NewRelicRegistry construct(
+     *     NewRelicRegistryConfig config,
+     *     Clock clock,
+     *     Attributes commonAttributes,
+     *     AttributesMaker attributesMaker,
+     *     TimeTracker timeTracker,
+     *     MetricBatchSender metricBatchSender) {
+     *
+     *     return new MyRegistryExtension(
+     *       someCustomField,
+     *       config,
+     *       clock,
+     *       commonAttributes,
+     *       attributesMaker,
+     *       timeTracker,
+     *       metricBatchSender);
+     *   }
+     * }
+     * </pre>
+     */
+    public interface RegistryFactory {
+
+      /**
+       * Construct an instance of a {@code NewRelicRegistry} (or a registry that extends {@code
+       * NewRelicRegistry}).
+       */
+      NewRelicRegistry construct(
+          NewRelicRegistryConfig config,
+          Clock clock,
+          Attributes commonAttributes,
+          AttributesMaker attributesMaker,
+          TimeTracker timeTracker,
+          MetricBatchSender metricBatchSender);
+    }
+
     public NewRelicRegistryBuilder(NewRelicRegistryConfig config) {
       this.config = config;
     }
@@ -256,8 +310,12 @@ public class NewRelicRegistry extends StepMeterRegistry {
     }
 
     public NewRelicRegistry build() {
+      return build(NewRelicRegistry::new);
+    }
+
+    public NewRelicRegistry build(RegistryFactory factory) {
       MetricBatchSender metricBatchSender = createMetricBatchSender();
-      return new NewRelicRegistry(
+      return factory.construct(
           config,
           Clock.SYSTEM,
           commonAttributes,
