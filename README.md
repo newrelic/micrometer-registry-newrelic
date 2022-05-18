@@ -1,4 +1,60 @@
-[![Community Plus header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Community_Plus.png)](https://opensource.newrelic.com/oss-category/#community-plus)
+[![Archive header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Archived.png)](https://opensource.newrelic.com/oss-category/#archived)
+
+# Archival Notice
+
+❗Notice: This project has been archived _as is_ and is no longer actively maintained.
+
+To send Micrometer metrics to New Relic, bridge Micrometer to the [OpenTelemetry SDK](https://github.com/open-telemetry/opentelemetry-java) using the [micrometer shim](https://github.com/open-telemetry/opentelemetry-java/tree/main/micrometer1-shim), and configure the OpenTelemetry SDK to export via OTLP (OpenTelemetry Protocol) to [New Relic's OTLP endpoint](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/opentelemetry-setup).
+
+The [OpenTelemetry Micrometer Shim example](https://github.com/open-telemetry/opentelemetry-java-docs/tree/main/micrometer-shim) demonstrates how to configure Micrometer to bridge metrics to OpenTelemetry. However, it demonstrates exposing the metrics via a prometheus endpoint instead of OTLP. The [New Relic OpenTelemetry SDK Config](https://github.com/newrelic/newrelic-opentelemetry-examples/tree/main/java/sdk-nr-config) demonstrates how to configure the OpenTelemetry SDK to export to New Relic via OTLP. Bringing both examples together yields the following configuration:
+
+```java
+import io.micrometer.core.instrument.MeterRegistry;
+import io.opentelemetry.api.OpenTelemetry;
+import io.opentelemetry.exporter.otlp.metrics.OtlpGrpcMetricExporter;
+import io.opentelemetry.micrometer1shim.OpenTelemetryMeterRegistry;
+import io.opentelemetry.sdk.OpenTelemetrySdk;
+import io.opentelemetry.sdk.metrics.SdkMeterProvider;
+import io.opentelemetry.sdk.metrics.export.AggregationTemporalitySelector;
+import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
+import io.opentelemetry.sdk.resources.Resource;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+
+@Configuration
+public class OpenTelemetryConfiguration {
+
+  @Bean
+  public OpenTelemetry openTelemetry() {
+    return OpenTelemetrySdk.builder()
+        .setMeterProvider(
+            SdkMeterProvider.builder()
+                .setResource(
+                    Resource.getDefault().toBuilder()
+                        .put("service.name", "My service name")
+                        // Include instrumentation.provider=micrometer to enable micrometer metrics
+                        // experience in New Relic
+                        .put("instrumentation.provider", "micrometer")
+                        .build())
+                .registerMetricReader(
+                    PeriodicMetricReader.builder(
+                            OtlpGrpcMetricExporter.builder()
+                                .setEndpoint("https://otlp.nr-data.net:4317")
+                                .addHeader("api-key", "NEW_RELIC_LICENSE_KEY")
+                                .setAggregationTemporalitySelector(
+                                    AggregationTemporalitySelector.deltaPreferred())
+                                .build())
+                        .build())
+                .build())
+        .build();
+  }
+
+  @Bean
+  public MeterRegistry meterRegistry(OpenTelemetry openTelemetry) {
+    return OpenTelemetryMeterRegistry.builder(openTelemetry).build();
+  }
+}
+```
 
 ### New Relic Micrometer registry
 
