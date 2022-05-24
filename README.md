@@ -9,6 +9,7 @@ To send Micrometer metrics to New Relic, bridge Micrometer to the [OpenTelemetry
 The [OpenTelemetry Micrometer Shim example](https://github.com/open-telemetry/opentelemetry-java-docs/tree/main/micrometer-shim) demonstrates how to configure Micrometer to bridge metrics to OpenTelemetry. However, it demonstrates exposing the metrics via a prometheus endpoint instead of OTLP. The [New Relic OpenTelemetry SDK Config](https://github.com/newrelic/newrelic-opentelemetry-examples/tree/main/java/sdk-nr-config) demonstrates how to configure the OpenTelemetry SDK to export to New Relic via OTLP. Bringing both examples together yields the following configuration:
 
 ```java
+import java.time.Duration;
 import io.micrometer.core.instrument.MeterRegistry;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.exporter.otlp.metrics.OtlpGrpcMetricExporter;
@@ -44,6 +45,8 @@ public class OpenTelemetryConfiguration {
                                 .setAggregationTemporalitySelector(
                                     AggregationTemporalitySelector.deltaPreferred())
                                 .build())
+                        // Match default micrometer collection interval of 60 seconds 
+                        .setInterval(Duration.ofSeconds(60))
                         .build())
                 .build())
         .build();
