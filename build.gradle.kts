@@ -30,7 +30,7 @@ googleJavaFormat {
 
 dependencies {
     api("io.micrometer:micrometer-core:1.7.0")
-    api("com.newrelic.telemetry:telemetry-core:0.13.2")
+    api("com.newrelic.telemetry:telemetry-core:0.15.0")
     implementation("org.slf4j:slf4j-api:1.7.30")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.6.0")
     testRuntimeOnly("org.slf4j:slf4j-simple:1.7.30")
