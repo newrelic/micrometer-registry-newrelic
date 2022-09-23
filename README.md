@@ -69,7 +69,7 @@ Query builder
 
 ### Building
 
-The project uses gradle 5 for building, and the gradle wrapper is provided.
+The project uses gradle 7.5.1 for building, and the gradle wrapper is provided.
 
 To compile, run the tests and build the jar:
 
