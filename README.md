@@ -31,7 +31,7 @@ custom events. This implementation is intended to supersede that, as [dimensiona
     <dependency>
         <groupId>com.newrelic.telemetry</groupId>
         <artifactId>micrometer-registry-new-relic</artifactId>
-        <version>0.9.0</version>
+        <version>0.10.0</version>
     </dependency>
 ```
 
