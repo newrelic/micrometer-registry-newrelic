@@ -1,4 +1,4 @@
-[![Archive header](https://github.com/newrelic/opensource-website/raw/master/src/images/categories/Archived.png)](https://opensource.newrelic.com/oss-category/#archived)
+![image](https://github.com/newrelic/micrometer-registry-newrelic/assets/64384521/659bdb60-cfb8-4057-b54f-0a639e908efd)
 
 # Archival Notice
 
