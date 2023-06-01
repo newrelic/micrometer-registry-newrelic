@@ -4,7 +4,7 @@
 
 ❗Notice: This project has been archived _as is_ and is no longer actively maintained.
 
-To send Micrometer metrics to New Relic, bridge Micrometer to the [OpenTelemetry SDK](https://github.com/open-telemetry/opentelemetry-java) using the [micrometer shim](https://github.com/open-telemetry/opentelemetry-java/tree/main/micrometer1-shim), and configure the OpenTelemetry SDK to export via OTLP (OpenTelemetry Protocol) to [New Relic's OTLP endpoint](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/opentelemetry-setup).
+To send Micrometer metrics to New Relic, bridge Micrometer to the [OpenTelemetry SDK](https://github.com/open-telemetry/opentelemetry-java) using the [micrometer shim](https://github.com/open-telemetry/opentelemetry-java-instrumentation/tree/main/instrumentation/micrometer/micrometer-1.5/library), and configure the OpenTelemetry SDK to export via OTLP (OpenTelemetry Protocol) to [New Relic's OTLP endpoint](https://docs.newrelic.com/docs/more-integrations/open-source-telemetry-integrations/opentelemetry/get-started/opentelemetry-set-up-your-app/).
 
 The [OpenTelemetry Micrometer Shim example](https://github.com/open-telemetry/opentelemetry-java-docs/tree/main/micrometer-shim) demonstrates how to configure Micrometer to bridge metrics to OpenTelemetry. However, it demonstrates exposing the metrics via a prometheus endpoint instead of OTLP. The [New Relic OpenTelemetry SDK Config](https://github.com/newrelic/newrelic-opentelemetry-examples/tree/main/java/sdk-nr-config) demonstrates how to configure the OpenTelemetry SDK to export to New Relic via OTLP. Bringing both examples together yields the following configuration:
 
